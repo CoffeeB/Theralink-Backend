@@ -10,6 +10,10 @@ const options = {
         },
         servers: [
             {
+                url: 'https://theralink-backend.onrender.com',
+                description: 'Production server'
+            },
+            {
                 url: 'http://localhost:3000',
                 description: 'Development server'
             }
@@ -17,6 +21,5 @@ const options = {
     },
     apis: ['./src/routes/*.ts']
 };
-
 export const specs = swaggerJsdoc(options);
 

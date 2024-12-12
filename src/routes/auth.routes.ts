@@ -57,6 +57,28 @@ export default router;
  *   post:
  *     tags: [Authentication]
  *     summary: Register a new user
+ *     description: |
+ *       Creates new user and sends credentials via email.
+ *       
+ *       Email Template:
+ *       Subject: "Your Theralink Account Credentials"
+ *       
+ *       Format:
+ * 
+ *       Welcome to Theralink!
+ * 
+ *       Your account has been created successfully.
+ * 
+ *       Username: {username}
+ * 
+ *       Password: {password}
+ * 
+ *       Please login and change your password for security purposes.
+ * 
+ *       Best regards,
+ * 
+ *       Theralink Team
+ *  
  *     requestBody:
  *       required: true
  *       content:

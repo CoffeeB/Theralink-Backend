@@ -29,3 +29,22 @@ enum Role {
   ADMIN
   CLIENT
 }
+
+enum Gender {
+    MALE
+    FEMALE
+}
+
+model Patient {
+    id            String    @id @default(uuid())
+    firstName     String
+    lastName      String
+    email         String    @unique
+    phone         String
+    gender        Gender
+    dateOfBirth   DateTime
+    address       String
+    medicalHistory Json?
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+}

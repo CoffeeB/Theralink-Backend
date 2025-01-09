@@ -1,0 +1,16 @@
+{
+  "timestamp": "2025-01-08T15-14-48-441Z",
+  "data": [
+    {
+      "id": "8d712841-3d07-44d8-9272-3ffe7d7bda41",
+      "email": "envitab@proton.me",
+      "username": "envitab_m5o107acbwi",
+      "password": "$2b$12$nVGbRLvdJOCvPsqg52/jCeMtv1OsZF/cRjTjnEXkQmSJHYA97xETK",
+      "role": "CLIENT",
+      "resetToken": "7191b20d81da9d7c0a67bce9d90c789e29f034c065b5aa4c75aa58997c7e8f38",
+      "resetTokenExpiry": "2025-01-08T16:06:43.840Z",
+      "createdAt": "2025-01-08T14:59:59.848Z",
+      "updatedAt": "2025-01-08T15:06:43.845Z"
+    }
+  ]
+}

@@ -40,6 +40,17 @@ router.post(
 
 export default router;
 
+// ADMIN
+// {
+//     "username":"essienedidiong1000_m694nearnbb",
+//     "password":"@t*YB9KX50%o"
+// }
+
+// CLIENT
+// "credentials": {
+//     "username": "testuser_m694quk9jl4",
+//     "password": "7q1*aCWkWV6V"
+// },
 /**
  * @swagger
  * components:

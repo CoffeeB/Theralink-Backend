@@ -10,11 +10,12 @@ declare global {
     }
 }
 
-export const authenticate = (req: Request, res: Response, next: NextFunction) => {
+export const authenticate = (req: Request, res: Response, next: NextFunction):void => {
     const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {
-        return res.status(401).json({ error: 'Authentication required' });
+         res.status(401).json({ error: 'Authentication required' });
+         return
     }
 
     try {
@@ -22,14 +23,16 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
         req.user = decoded;
         next();
     } catch (error) {
-        return res.status(401).json({ error: 'Invalid token' });
+         res.status(401).json({ error: 'Invalid token' });
+         return
     }
 };
 
 export const authorize = (...roles: string[]) => {
-    return (req: Request, res: Response, next: NextFunction) => {
+    return (req: Request, res: Response, next: NextFunction):void => {
         if (!req.user || !roles.includes(req.user.role)) {
-            return res.status(403).json({ error: 'Unauthorized access' });
+             res.status(403).json({ error: 'Unauthorized access' });
+             return
         }
         next();
     };

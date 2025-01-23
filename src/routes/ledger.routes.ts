@@ -1,68 +1,68 @@
 import { Router } from "express";
-import { DocumentController } from "../controllers/document.controller";
+import { LedgerController } from "../controllers/ledger.controller";
 import { validateRequest } from "../middleware/validate.middleware";
-import { documentSchema } from "../validators/document.validator";
+import { ledgerSchema } from "../validators/ledger.validator";
 import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
-const controller = new DocumentController();
+const controller = new LedgerController();
 router.post("/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
-  controller.createDocument(req, res)
+  controller.createLedger(req, res)
 );
 
-// Route to get all Documents for a patient
+// Route to get all Ledgers for a patient
 router.get("/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
-  controller.getDocuments(req, res)
+  controller.getLedgers(req, res)
 );
 
-// Route to get a specific document by ID
+// Route to get a specific ledger by ID
 router.get("/:id/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
-  controller.getDocumentById(req, res)
+  controller.getLedgerById(req, res)
 );
 
-// Route to update a specific document
+// Route to update a specific ledger
 router.put(
   "/:id/:patientid",
   authenticate,
   authorize("ADMIN"),
-  validateRequest(documentSchema),
-  (req, res) => controller.updateDocument(req, res)
+  validateRequest(ledgerSchema),
+  (req, res) => controller.updateLedger(req, res)
 );
 
-// Route to delete a specific document
+// Route to delete a specific ledger
 router.delete("/:id/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
-  controller.deleteDocument(req, res)
+  controller.deleteLedger(req, res)
 );
 
 export default router;
 
 /**
  * @swagger
- * /api/document/{patientId}:
+ * /api/ledger/{patientId}:
  *   get:
- *     tags: [Document]
- *     summary: Get all document records for a patient
+ *     tags: [Ledger]
+ *     summary: Get all ledger records for a patient
  *     parameters:
  *       - in: path
  *         name: patientId
  *         required: true
  *         schema:
  *           type: string
- *         description: ID of the patient whose document records are being retrieved
+ *         description: ID of the patient whose ledger records are being retrieved
  *     responses:
  *       200:
- *         description: List of patient document records retrieved successfully
+ *         description: List of patient ledger records retrieved successfully
  *
  *   post:
- *     tags: [Document]
- *     summary: Create new document for a patient
+ *     tags: [Ledger]
+ *     summary: Create new ledger for a patient
  *     parameters:
  *       - in: path
  *         name: patientId
  *         required: true
  *         schema:
  *           type: string
- *         description: ID of the patient for whom document is being created
+ *         description: ID of the patient for whom ledger is being created
  *     requestBody:
  *       required: true
  *       content:
@@ -70,18 +70,26 @@ export default router;
  *           schema:
  *             type: object
  *             properties:
- *               filePath:
+ *               description:
  *                 type: string
- *               fileType:
+ *               paymentType:
  *                 type: string
+ *               amount:
+ *                 type: number
+ *               ledgerDate:
+ *                 type: string
+ *                 format: date
+ *               ledgerType:
+ *                 type: string
+ *                 enum: [CREDIT, DEBIT, TRANSFER, ADJUSTMENT]
  *     responses:
  *       201:
- *         description: Document record created successfully
+ *         description: Ledger record created successfully
  *
- * /api/document/{patientId}/{id}:
+ * /api/ledger/{patientId}/{id}:
  *   get:
- *     tags: [Document]
- *     summary: Get a specific document record by patient ID and document ID
+ *     tags: [Ledger]
+ *     summary: Get a specific ledger record by patient ID and ledger ID
  *     parameters:
  *       - in: path
  *         name: patientId
@@ -94,14 +102,14 @@ export default router;
  *         required: true
  *         schema:
  *           type: string
- *         description: ID of the document record
+ *         description: ID of the ledger record
  *     responses:
  *       200:
- *         description: Document record retrieved successfully
+ *         description: Ledger record retrieved successfully
  *
  *   put:
- *     tags: [Document]
- *     summary: Update an document record for a patient
+ *     tags: [Ledger]
+ *     summary: Update a ledger record for a patient
  *     parameters:
  *       - in: path
  *         name: patientId
@@ -114,7 +122,7 @@ export default router;
  *         required: true
  *         schema:
  *           type: string
- *         description: ID of the document record to be updated
+ *         description: ID of the ledger record to be updated
  *     requestBody:
  *       required: true
  *       content:
@@ -122,26 +130,25 @@ export default router;
  *           schema:
  *             type: object
  *             properties:
- *               provider:
+ *               description:
  *                 type: string
- *               policyNumber:
+ *               paymentType:
  *                 type: string
- *               startDate:
+ *               amount:
+ *                 type: number
+ *               ledgerDate:
  *                 type: string
  *                 format: date
- *               endDate:
+ *               ledgerType:
  *                 type: string
- *                 format: date
- *               status:
- *                 type: string
- *                 enum: [PENDING, ACTIVE, CANCELLED]
+ *                 enum: [CREDIT, DEBIT, TRANSFER, ADJUSTMENT]
  *     responses:
  *       200:
- *         description: Document record updated successfully
+ *         description: Ledger record updated successfully
  *
  *   delete:
- *     tags: [Document]
- *     summary: Delete a specific document record
+ *     tags: [Ledger]
+ *     summary: Delete a specific ledger record
  *     parameters:
  *       - in: path
  *         name: patientId
@@ -154,8 +161,8 @@ export default router;
  *         required: true
  *         schema:
  *           type: string
- *         description: ID of the document record to be deleted
+ *         description: ID of the ledger record to be deleted
  *     responses:
  *       204:
- *         description: Document record deleted successfully
+ *         description: Ledger record deleted successfully
  */

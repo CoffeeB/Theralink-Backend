@@ -22,6 +22,14 @@ enum Race {
   ASIAN
 }
 
+enum LedgerType {
+  CREDIT
+  DEBIT
+  DEBIT
+  TRANSFER
+  ADJUSTMENT
+}
+
 enum AppointmentStatus {
   PENDING
   CONFIRMED
@@ -191,9 +199,8 @@ model Ledger {
   paymentType String
   amount      Float
   ledgerDate DateTime @default(now())
-
+  ledgerType LedgerType
   patient     Patient   @relation(fields: [patientId], references: [id])
-
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }

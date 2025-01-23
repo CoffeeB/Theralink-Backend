@@ -10,6 +10,7 @@ import medicalHistoryRoutes from "./routes/medicalHistory.routes";
 import diagnosisRoutes from "./routes/diagnosis.routes";
 import documentRoutes from "./routes/document.routes";
 import ledgerRoutes from "./routes/ledger.routes";
+import medicationRoutes from "./routes/medication.routes";
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use("/api/medicalHistory", medicalHistoryRoutes);
 app.use("/api/diagnosis", diagnosisRoutes);
 app.use("/api/document", documentRoutes);
 app.use("/api/ledger", ledgerRoutes);
+app.use("/api/medication", medicationRoutes);
 // Health check route
 app.get("/", (_req, res) => {
   res.json({ status: "API is running" });

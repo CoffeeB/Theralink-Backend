@@ -2,15 +2,15 @@ import swaggerUi from "swagger-ui-express";
 import { specs } from "./config/swagger";
 import express from "express";
 import cors from "cors";
-import authRoutes from "./routes/auth.routes";
-import patientRoutes from "./routes/patient.routes";
-import appointmentRoutes from "./routes/appointment.routes";
-import insuranceRoutes from "./routes/insurance.routes";
-import medicalHistoryRoutes from "./routes/medicalHistory.routes";
-import diagnosisRoutes from "./routes/diagnosis.routes";
-import documentRoutes from "./routes/document.routes";
-import ledgerRoutes from "./routes/ledger.routes";
-import medicationRoutes from "./routes/medication.routes";
+// import authRoutes from "./routes/auth.routes";
+// import patientRoutes from "./routes/patient.routes";
+// import appointmentRoutes from "./routes/appointment.routes";
+// import insuranceRoutes from "./routes/insurance.routes";
+// import medicalHistoryRoutes from "./routes/medicalHistory.routes";
+// import diagnosisRoutes from "./routes/diagnosis.routes";
+// import documentRoutes from "./routes/document.routes";
+// import ledgerRoutes from "./routes/ledger.routes";
+// import medicationRoutes from "./routes/medication.routes";
 
 const app = express();
 
@@ -27,15 +27,15 @@ app.use(
 app.use(express.json());
 
 // Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/patients", patientRoutes);
-app.use("/api/appointment", appointmentRoutes);
-app.use("/api/insurance", insuranceRoutes);
-app.use("/api/medicalHistory", medicalHistoryRoutes);
-app.use("/api/diagnosis", diagnosisRoutes);
-app.use("/api/document", documentRoutes);
-app.use("/api/ledger", ledgerRoutes);
-app.use("/api/medication", medicationRoutes);
+// app.use("/api/auth", authRoutes);
+// app.use("/api/patients", patientRoutes);
+// app.use("/api/appointment", appointmentRoutes);
+// app.use("/api/insurance", insuranceRoutes);
+// app.use("/api/medicalHistory", medicalHistoryRoutes);
+// app.use("/api/diagnosis", diagnosisRoutes);
+// app.use("/api/document", documentRoutes);
+// app.use("/api/ledger", ledgerRoutes);
+// app.use("/api/medication", medicationRoutes);
 // Health check route
 app.get("/", (_req, res) => {
   res.json({ status: "API is running" });

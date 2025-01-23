@@ -41,6 +41,6 @@ app.get("/", (_req, res) => {
   res.json({ status: "API is running" });
 });
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 export { app };

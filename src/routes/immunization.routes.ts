@@ -35,7 +35,6 @@ router.delete("/:id/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
 );
 
 export default router;
-
 /**
  * @swagger
  * /api/immunization/{patientId}:
@@ -75,25 +74,21 @@ export default router;
  *               manufacturer:
  *                 type: string
  *               temperature:
- *                 type: string  
- *              comments:
+ *                 type: string
+ *               comments:
  *                 type: string
  *               rejectedReason:
  *                 type: string
  *               immunization:
- *                 type: string 
- *               manufacturer:
  *                 type: string
- *               temperature:
- *                 type: string  
- *              dose:
+ *               dose:
  *                 type: number
  *               isRejected:
  *                 type: boolean
  *               lotNumber:
  *                 type: number
- *               adminstrationSite:
- *                 type: string 
+ *               administrationSite:
+ *                 type: string
  *               administeredBy:
  *                 type: string
  *               dateAdministered:
@@ -155,25 +150,21 @@ export default router;
  *               manufacturer:
  *                 type: string
  *               temperature:
- *                 type: string  
- *              comments:
+ *                 type: string
+ *               comments:
  *                 type: string
  *               rejectedReason:
  *                 type: string
  *               immunization:
- *                 type: string 
- *               manufacturer:
  *                 type: string
- *               temperature:
- *                 type: string  
- *              dose:
+ *               dose:
  *                 type: number
  *               isRejected:
  *                 type: boolean
  *               lotNumber:
  *                 type: number
- *               adminstrationSite:
- *                 type: string 
+ *               administrationSite:
+ *                 type: string
  *               administeredBy:
  *                 type: string
  *               dateAdministered:

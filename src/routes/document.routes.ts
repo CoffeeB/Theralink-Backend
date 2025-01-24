@@ -35,7 +35,6 @@ router.delete("/:id/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
 );
 
 export default router;
-
 /**
  * @swagger
  * /api/document/{patientId}:
@@ -74,9 +73,9 @@ export default router;
  *                 type: string
  *               fileType:
  *                 type: string
- *              fileUrl:
+ *               fileUrl:
  *                 type: string
- *              description:
+ *               description:
  *                 type: string
  *     responses:
  *       201:
@@ -105,7 +104,7 @@ export default router;
  *
  *   put:
  *     tags: [Document]
- *     summary: Update an document record for a patient
+ *     summary: Update a document record for a patient
  *     parameters:
  *       - in: path
  *         name: patientId
@@ -130,9 +129,9 @@ export default router;
  *                 type: string
  *               fileType:
  *                 type: string
- *              fileUrl:
+ *               fileUrl:
  *                 type: string
- *              description:
+ *               description:
  *                 type: string
  *     responses:
  *       200:

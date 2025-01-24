@@ -297,7 +297,7 @@ model Immunization {
   patientId    String
   vaccineName  String   
   manufacturer  String   
-  lotNumber  float   
+  lotNumber  Float   
   adminstrationSite  String   
   rejectedReason  String? 
   isRejected  Boolean?   

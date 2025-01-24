@@ -20,7 +20,7 @@ router.get("/:id/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
   controller.getPatientFileById(req, res)
 );
 
-// Route to update a specific patientFile
+// Route to update a specific patientFiles
 router.put(
   "/:id/:patientid",
   authenticate,

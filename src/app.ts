@@ -22,6 +22,8 @@ import contactNoteRoutes from "./routes/contactNote.routes";
 import educationBackgroundRoutes from "./routes/educationBackground.routes";
 import employmentRoutes from "./routes/employment.routes";
 import socialDeterminantsRoutes from "./routes/socialDeterminants.routes";
+import clientSignatureRoutes from "./routes/clientSignature.routes";
+import parentSignatureRoutes from "./routes/parentSignature.routes";
 // socialDeterminants
 
 const app = express();
@@ -59,6 +61,8 @@ app.use("/api/contactNotes", contactNoteRoutes);
 app.use("/api/educationBackground", educationBackgroundRoutes);
 app.use("/api/employment", employmentRoutes);
 app.use("/api/socialDeterminants", socialDeterminantsRoutes);
+app.use("/api/clientSignature", clientSignatureRoutes);
+app.use("/api/parentSignature", parentSignatureRoutes);
 // Health check route
 app.get("/", (_req, res) => {
   res.json({ status: "API is running" });

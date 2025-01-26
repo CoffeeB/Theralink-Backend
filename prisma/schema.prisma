@@ -420,8 +420,7 @@ model SocialDeterminants {
 model ClientSignature {
   id                String       @id @default(uuid())
   signature    String    
-  pin      String
-  finance    String    
+  pin      String 
   patientId          String
   patient            Patient      @relation(fields: [patientId], references: [id])
 
@@ -433,7 +432,6 @@ model ParentSignature {
   id                String       @id @default(uuid())
   signature    String    
   pin         String
-  finance    String    
   patientId          String
   patient            Patient      @relation(fields: [patientId], references: [id])
 

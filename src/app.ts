@@ -21,7 +21,8 @@ import collateralContactRoutes from "./routes/collateralContact.routes";
 import contactNoteRoutes from "./routes/contactNote.routes";
 import educationBackgroundRoutes from "./routes/educationBackground.routes";
 import employmentRoutes from "./routes/employment.routes";
-// employment
+import socialDeterminantsRoutes from "./routes/socialDeterminants.routes";
+// socialDeterminants
 
 const app = express();
 
@@ -57,6 +58,7 @@ app.use("/api/collateralContacts", collateralContactRoutes);
 app.use("/api/contactNotes", contactNoteRoutes);
 app.use("/api/educationBackground", educationBackgroundRoutes);
 app.use("/api/employment", employmentRoutes);
+app.use("/api/socialDeterminants", socialDeterminantsRoutes);
 // contactNotes
 // Health check route
 app.get("/", (_req, res) => {

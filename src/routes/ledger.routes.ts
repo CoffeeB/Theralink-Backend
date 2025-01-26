@@ -74,6 +74,7 @@ export default router;
  *                 type: string
  *               paymentType:
  *                 type: string
+ *                 enum: [CASH, CHECK, CREDITCARD, DEBITCARD PAYMENT]
  *               amount:
  *                 type: number
  *               ledgerDate:
@@ -81,7 +82,7 @@ export default router;
  *                 format: date
  *               ledgerType:
  *                 type: string
- *                 enum: [CREDIT, DEBIT, TRANSFER, ADJUSTMENT]
+ *                 enum: [CHARGE, PAYMENT]
  *     responses:
  *       201:
  *         description: Ledger record created successfully
@@ -134,6 +135,7 @@ export default router;
  *                 type: string
  *               paymentType:
  *                 type: string
+ *                 enum: [CASH, CHECK, CREDITCARD, DEBITCARD PAYMENT]
  *               amount:
  *                 type: number
  *               ledgerDate:
@@ -141,7 +143,7 @@ export default router;
  *                 format: date
  *               ledgerType:
  *                 type: string
- *                 enum: [CREDIT, DEBIT, TRANSFER, ADJUSTMENT]
+ *                 enum: [CHARGE, PAYMENT]
  *     responses:
  *       200:
  *         description: Ledger record updated successfully

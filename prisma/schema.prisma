@@ -23,10 +23,8 @@ enum Race {
 }
 
 enum LedgerType {
-  CREDIT
-  DEBIT
-  TRANSFER
-  ADJUSTMENT
+  CHARGE
+  PAYMENT
 }
 
 enum AppointmentStatus {
@@ -37,8 +35,7 @@ enum AppointmentStatus {
 
 enum insuranceStatus {
   PRIMARY
-  SECONDARY
-  TERTIARY
+  COPAY
 }
 
 
@@ -51,7 +48,44 @@ enum eligibilityStatus {
   REVOKED  
 }
 
+enum educationLevelStatus {
+ ELEMENTARY        
+  PRIMARY     
+  HIGHSCHOOL  
+  TERTIARY 
+}
 
+enum contactTypeStatus {
+  TEACHERS        
+  AFTERSCHOOL     
+  COMMUNITYCENTERS  
+  OTHERS
+  PRINCIPAL 
+  GUIDANCECOUNSELORS
+}
+
+enum complainceStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum paymentTypeStatus {
+  CASH
+   CHECK
+   CREDITCARD
+   DEBITCARD 
+}
+
+enum treatmentGoalsStatus{
+  COMPLETE
+  DEFERRED
+  DISCONTINUED
+  NEWGOALCREATED
+  NOTACHIEVED
+  NOTYETBEGUN
+  ONGOING
+}
 
 model User {
   id            String    @id @default(uuid())
@@ -86,10 +120,8 @@ model Patient {
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  medicalHistory MedicalHistory[] 
   appointments  Appointment[]
   insurance     Insurance[] 
-  eligibility   Eligibility[] 
   diagnosis   Diagnosis[]
   ledger Ledger[]
   medication Medication[]
@@ -98,12 +130,21 @@ model Patient {
   document Document[]
   service Service[]
   physician Physician[]
-  background Background[]
+  
   immunization Immunization[]
   patientFile PatientFile[]
   parentContact ParentContact[]
   collateralContact CollateralContact[]
   contactNote ContactNote[]
+
+  educationBackground EducationBackground[]
+  employment Employment[]
+  socialDeterminants SocialDeterminants[]
+  parentSignature ParentSignature[]
+  clientSignature ClientSignature[]
+  complaince Compliance[]
+  treatmentPlan TreatmentPlan[]
+  questionnaire Questionnaire[]
 }
 
 model Appointment {
@@ -124,51 +165,23 @@ model Appointment {
   updatedAt      DateTime @updatedAt
 }
 
-model MedicalHistory {
-  id            String     @id @default(uuid())
-  provider      String   
-  policyNumber  String     @unique
-  startDate     DateTime   
-  endDate       DateTime? 
-  status        insuranceStatus
-  
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-
-  patientId     String
-  patient       Patient    @relation(fields: [patientId], references: [id])
-}
 
 model Insurance {
   id            String     @id @default(uuid())
-  provider      String   
+  insuranceType String   
   policyNumber  String     @unique
   startDate     DateTime   
   endDate       DateTime? 
-  status        insuranceStatus
+  status        insuranceStatus @default(PRIMARY)
+  eligibilityStatus  eligibilityStatus @default(PENDING)
   
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
 
   patientId     String
   patient       Patient    @relation(fields: [patientId], references: [id])
-  eligibility   Eligibility[] 
 }
 
-model Eligibility {
-  id            String     @id @default(uuid())
-  patientId     String
-  insuranceId   String
-  eligibilityStatus    eligibilityStatus @default(PENDING)   
-  checkedAt     DateTime   
-  notes         String?   
-  
-  patient       Patient    @relation(fields: [patientId], references: [id])
-  insurance     Insurance  @relation(fields: [insuranceId], references: [id])
-
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-}
 
 model Diagnosis {
   id          String    @id @default(uuid())
@@ -197,7 +210,7 @@ model Ledger {
   id          String   @id @default(uuid())
   patientId   String
   description String
-  paymentType String
+  paymentType paymentTypeStatus @default(CASH)
   amount      Float
   ledgerDate DateTime @default(now())
   ledgerType LedgerType
@@ -281,18 +294,7 @@ model Physician {
   updatedAt   DateTime  @updatedAt
 }
 
-model Background {
-  id                 String       @id @default(uuid())
-  patientId          String
-  education          Json         
-  medicationHistory  Json       
-  socialDeterminants Json         
 
-  patient            Patient      @relation(fields: [patientId], references: [id])
-
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
-}
 
 model Immunization {
   id           String   @id @default(uuid())
@@ -351,6 +353,7 @@ model CollateralContact {
   lastName      String
   phone        String
   email        String?
+  contactType contactTypeStatus @default(OTHERS)
   patientId    String
   patient      Patient   @relation(fields: [patientId], references: [id])
   createdAt    DateTime  @default(now())
@@ -369,3 +372,171 @@ model ContactNote {
   updatedAt    DateTime  @updatedAt
 }
 
+
+
+
+model EducationBackground {
+  id                 String       @id @default(uuid())
+
+  educationLevel          educationLevelStatus   @default(PRIMARY)         
+  yearOfPassing  String       
+  degree String         
+  grade String         
+  patientId          String
+  patient            Patient      @relation(fields: [patientId], references: [id])
+
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+}
+
+model Employment {
+  id                String       @id @default(uuid())
+  organizationName    String       
+  designation  String       
+  startDate DateTime         
+  endDate DateTime         
+  responsibilities String         
+  patientId          String
+  patient            Patient      @relation(fields: [patientId], references: [id])
+
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+}
+
+model SocialDeterminants {
+  id                String       @id @default(uuid())
+  finance    String       
+  food  String?      
+  transportation String? 
+  activity String?    
+  patientId          String
+  patient            Patient      @relation(fields: [patientId], references: [id])
+
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+}
+
+model ClientSignature {
+  id                String       @id @default(uuid())
+  signature    String    
+  pin      String
+  finance    String    
+  patientId          String
+  patient            Patient      @relation(fields: [patientId], references: [id])
+
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+}
+
+model ParentSignature {
+  id                String       @id @default(uuid())
+  signature    String    
+  pin         String
+  finance    String    
+  patientId          String
+  patient            Patient      @relation(fields: [patientId], references: [id])
+
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+}
+model Compliance {
+  id             String    @id @default(uuid())
+  startdate           DateTime
+  enddate           DateTime
+  lastCompleteddate           DateTime
+  complaince     String
+  document     String
+  template     String
+  service     String
+  comment     String
+  history     String
+  completed     complainceStatus @default(PENDING)
+  patientId      String
+  patient        Patient  @relation(fields: [patientId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model TreatmentPlan {
+  id          String   @id @default(uuid())
+  name       String
+  startDate      DateTime
+  endDate      DateTime
+  startTime String?
+  endTime String?
+  service String
+  placeOfService String
+  maintenanceRecommendation String?
+  strength String?
+  needs String?
+  abilites String?
+  preferences String?
+  planning String?
+  stepdownServices String?
+  dischargePlanning String?
+  agencies String?
+  patientId   String
+  patient     Patient   @relation(fields: [patientId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  treatmentGoals TreatmentGoals[]
+}
+
+model TreatmentGoals {
+  id          String   @id @default(uuid())
+  name       String
+  startDate      DateTime?
+  endDate      DateTime?
+  targetDate      DateTime
+  status treatmentGoalsStatus
+  comments String?
+  description String?
+  treatmentplanId   String
+  treatmentplan     TreatmentPlan   @relation(fields: [treatmentplanId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  treatmentObjective TreatmentObjective[]
+}
+
+model TreatmentObjective {
+  id          String   @id @default(uuid())
+  
+  startDate      DateTime?
+  endDate      DateTime?
+  targetDate      DateTime
+  objective String
+  treatmentgoalsId   String
+  treatmentgoals     TreatmentGoals   @relation(fields: [treatmentgoalsId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  treatmentIntervention TreatmentIntervention[]
+}
+model TreatmentIntervention {
+  id          String   @id @default(uuid())
+  Intervention String
+  servicetype String?
+  stafftypes String?
+  customstafftypes String?
+  customservice String?
+  frequency String
+  location String
+  duration String
+  treatmentobjectiveId   String
+  treatmentobjective     TreatmentObjective   @relation(fields: [treatmentobjectiveId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Questionnaire {
+  id          String   @id @default(uuid())
+  question String
+  patientId   String
+  patient     Patient   @relation(fields: [patientId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}

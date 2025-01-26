@@ -72,7 +72,7 @@ export default router;
  *           schema:
  *             type: object
  *             properties:
- *               provider:
+ *               insuranceType:
  *                 type: string
  *               policyNumber:
  *                 type: string
@@ -84,7 +84,10 @@ export default router;
  *                 format: date
  *               status:
  *                 type: string
- *                 enum: [PENDING, ACTIVE, CANCELLED]
+ *                 enum: [PRIMARY, COPAY]
+ *              eligibilityStatus:
+ *                 type: string
+ *                 enum: [PENDING, ELIGIBLE,INELIGIBLE,UNDER_REVIEW, EXPIRED, REVOKED]
  *     responses:
  *       201:
  *         description: Insurance record created successfully
@@ -133,7 +136,7 @@ export default router;
  *           schema:
  *             type: object
  *             properties:
- *               provider:
+ *               insuranceType:
  *                 type: string
  *               policyNumber:
  *                 type: string
@@ -145,7 +148,10 @@ export default router;
  *                 format: date
  *               status:
  *                 type: string
- *                 enum: [PENDING, ACTIVE, CANCELLED]
+ *                 enum: [PRIMARY, COPAY]
+ *               eligibilityStatus:
+ *                 type: string
+ *                 enum: [PENDING, ELIGIBLE,INELIGIBLE,UNDER_REVIEW, EXPIRED, REVOKED]
  *     responses:
  *       200:
  *         description: Insurance record updated successfully

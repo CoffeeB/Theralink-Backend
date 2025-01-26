@@ -1,9 +1,10 @@
 import Joi from 'joi';
-import { insuranceStatus } from '@prisma/client';
+import { insuranceStatus,eligibilityStatus } from '@prisma/client';
 export const insuranceSchema = Joi.object({
-    provider: Joi.string().required(),
     policyNumber: Joi.string().required(),
+    insuranceType: Joi.string().required(),
     startDate: Joi.date().required(),
     endDate: Joi.date().optional(),
     status: Joi.string().valid(...Object.values(insuranceStatus)).required(),
+    eligibilityStatus: Joi.string().valid(...Object.values(eligibilityStatus)).required(),
 });

@@ -19,6 +19,8 @@ import immunizationRoutes from "./routes/immunization.routes";
 import parentContactRoutes from "./routes/parentContact.routes";
 import collateralContactRoutes from "./routes/collateralContact.routes";
 import contactNoteRoutes from "./routes/contactNote.routes";
+import educationBackgroundRoutes from "./routes/educationBackground.routes";
+// educationBackground
 
 const app = express();
 
@@ -52,6 +54,7 @@ app.use("/api/immunization", immunizationRoutes);
 app.use("/api/parentContacts", parentContactRoutes);
 app.use("/api/collateralContacts", collateralContactRoutes);
 app.use("/api/contactNotes", contactNoteRoutes);
+app.use("/api/educationBackground", educationBackgroundRoutes);
 // contactNotes
 // Health check route
 app.get("/", (_req, res) => {

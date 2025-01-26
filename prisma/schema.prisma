@@ -55,13 +55,14 @@ enum educationLevelStatus {
   TERTIARY 
 }
 
+
 enum contactTypeStatus {
   TEACHERS        
-  AFTERSCHOOL     
-  COMMUNITYCENTERS  
+  AFTER_SCHOOL     
+  COMMUNITY_CENTERS  
   OTHERS
   PRINCIPAL 
-  GUIDANCECOUNSELORS
+  GUIDANCE_COUNSELORS
 }
 
 enum complainceStatus {
@@ -73,18 +74,18 @@ enum complainceStatus {
 enum paymentTypeStatus {
   CASH
    CHECK
-   CREDITCARD
-   DEBITCARD 
+   CREDIT_CARD
+   DEBIT_CARD 
 }
 
 enum treatmentGoalsStatus{
   COMPLETE
   DEFERRED
-  DISCONTINUED
-  NEWGOALCREATED
-  NOTACHIEVED
-  NOTYETBEGUN
-  ONGOING
+  DIS_CONTINUED
+  NEW_GOAL_CREATED
+  NOT_ACHIEVED
+  NOT_YET_BEGUN
+  ON_GOING
 }
 
 model User {

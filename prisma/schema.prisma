@@ -516,14 +516,14 @@ model TreatmentObjective {
 }
 model TreatmentIntervention {
   id          String   @id @default(uuid())
-  Intervention String
+  intervention String
   servicetype String?
   stafftypes String?
   customstafftypes String?
   customservice String?
-  frequency String
+  frequency Float
   location String
-  duration String
+  duration Float
   treatmentobjectiveId   String
   treatmentobjective     TreatmentObjective   @relation(fields: [treatmentobjectiveId], references: [id])
 

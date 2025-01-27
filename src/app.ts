@@ -27,6 +27,7 @@ import parentSignatureRoutes from "./routes/parentSignature.routes";
 import treatmentPlanRoutes from "./routes/treatmentPlan.routes";
 import treatmentGoalsRoutes from "./routes/treatmentGoals.routes";
 import treatmentObjectiveRoutes from "./routes/treatmentObjective.routes";
+import treatmentInterventionRoutes from "./routes/treatmentIntervention.routes";
 // socialDeterminants
 
 const app = express();
@@ -69,6 +70,7 @@ app.use("/api/parentSignature", parentSignatureRoutes);
 app.use("/api/treatmentPlan", treatmentPlanRoutes);
 app.use("/api/treatmentGoals", treatmentGoalsRoutes);
 app.use("/api/treatmentObjective", treatmentObjectiveRoutes);
+app.use("/api/treatmentIntervention", treatmentInterventionRoutes);
 // treatmentGoalsRoutes
 // Health check route
 app.get("/", (_req, res) => {

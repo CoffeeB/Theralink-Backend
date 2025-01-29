@@ -88,6 +88,12 @@ enum treatmentGoalsStatus{
   ON_GOING
 }
 
+enum MessageSentStatus {
+  DELIVERED
+  SENT
+  READ
+}
+
 model User {
   id            String    @id @default(uuid())
   email         String    @unique
@@ -112,7 +118,7 @@ model Conversation {
   lastMessage String
   messages     Message[] 
   userId   String
-  user     User   @relation(fields: [userId], references: [id])
+  user     User   @relation(fields: [userId], references: [id],  onDelete: Cascade)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
@@ -121,16 +127,24 @@ model Conversation {
 model Message {
   id          String   @id @default(uuid())
   body String
+  subject String
   image String? 
   broadcast Boolean?
   uniCast   Boolean
   room  String?
   toUserId String
-  toUser     User   @relation(fields: [toUserId], references: [id], name:"ToUserRelation")
+  status MessageSentStatus?
+
+  isRead         Boolean  @default(false)  
+  isImportant    Boolean  @default(false)  
+  isSpam         Boolean  @default(false)  
+  isDeleted      Boolean  @default(false)  
+
+  toUser     User   @relation(fields: [toUserId], references: [id],  onDelete: Cascade, name:"ToUserRelation")
   userId   String
-  user     User   @relation(fields: [userId], references: [id], name:"SentMessages")
+  user     User   @relation(fields: [userId], references: [id],  onDelete: Cascade, name:"SentMessages")
   conversationId   String
-  conversation     Conversation   @relation(fields: [conversationId], references: [id])
+  conversation     Conversation   @relation(fields: [conversationId], references: [id],  onDelete: Cascade)
   
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -187,12 +201,12 @@ model Appointment {
 
   // Relationship btw patient and appointment
   patientId      String
-  patient        Patient  @relation(fields: [patientId], references: [id])
+  patient        Patient  @relation(fields: [patientId], references: [id],  onDelete: Cascade)
 
   // Relationship btw appointment and doctor
 
   healthcareProviderId String
-  healthcareProvider User @relation(fields: [healthcareProviderId], references: [id])
+  healthcareProvider User @relation(fields: [healthcareProviderId], references: [id],  onDelete: Cascade)
 
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
@@ -212,7 +226,7 @@ model Insurance {
   updatedAt     DateTime   @updatedAt
 
   patientId     String
-  patient       Patient    @relation(fields: [patientId], references: [id])
+  patient       Patient    @relation(fields: [patientId], references: [id],  onDelete: Cascade)
 }
 
 
@@ -221,7 +235,7 @@ model Diagnosis {
   patientId   String
   description String
   diagnosisDate DateTime @default(now())
-  patient     Patient    @relation(fields: [patientId], references: [id])
+  patient     Patient    @relation(fields: [patientId], references: [id],  onDelete: Cascade)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
@@ -233,7 +247,7 @@ model Document {
   fileType    String
   description String?
 
-  patient     Patient   @relation(fields: [patientId], references: [id])
+  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -247,7 +261,7 @@ model Ledger {
   amount      Float
   ledgerDate DateTime @default(now())
   ledgerType LedgerType
-  patient     Patient   @relation(fields: [patientId], references: [id])
+  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
@@ -263,7 +277,7 @@ model Medication {
   startDate DateTime
   endDate DateTime
 
-  patient     Patient   @relation(fields: [patientId], references: [id])
+  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -279,7 +293,7 @@ model MedicationAdminstration {
   frequency      Float
   administeredDate DateTime
   patientId   String
-  patient     Patient   @relation(fields: [patientId], references: [id])
+  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -296,7 +310,7 @@ model Vitals {
   height Float
   recordDate DateTime
   patientId   String
-  patient     Patient   @relation(fields: [patientId], references: [id])
+  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -308,7 +322,7 @@ model Service {
   description String?
   cost        Float
   patientId   String
-  patient     Patient   @relation(fields: [patientId], references: [id])
+  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
@@ -322,7 +336,7 @@ model Physician {
   address       String
   comment       String
   patientId   String
-  patient     Patient   @relation(fields: [patientId], references: [id])
+  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
@@ -344,7 +358,7 @@ model Immunization {
   dateExpired DateTime 
   administeredBy String   
   comments        String? 
-  patient      Patient  @relation(fields: [patientId], references: [id])
+  patient      Patient  @relation(fields: [patientId], references: [id],  onDelete: Cascade)
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -357,7 +371,7 @@ model PatientFile {
   fileType     String  
   fileUrl      String   
   description  String?  
-  patient      Patient  @relation(fields: [patientId], references: [id])
+  patient      Patient  @relation(fields: [patientId], references: [id],  onDelete: Cascade)
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -374,7 +388,7 @@ model ParentContact {
   city      String?   
   state      String?   
   patientId    String
-  patient      Patient   @relation(fields: [patientId], references: [id])
+  patient      Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
   
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
@@ -388,7 +402,7 @@ model CollateralContact {
   email        String?
   contactType contactTypeStatus @default(OTHERS)
   patientId    String
-  patient      Patient   @relation(fields: [patientId], references: [id])
+  patient      Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 }
@@ -400,7 +414,7 @@ model ContactNote {
   phone        String
   email        String?
   patientId    String
-  patient      Patient   @relation(fields: [patientId], references: [id])
+  patient      Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 }
@@ -414,7 +428,7 @@ model EducationBackground {
   degree String         
   grade String         
   patientId          String
-  patient            Patient      @relation(fields: [patientId], references: [id])
+  patient            Patient      @relation(fields: [patientId], references: [id],  onDelete: Cascade)
 
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
@@ -428,7 +442,7 @@ model Employment {
   endDate DateTime         
   responsibilities String         
   patientId          String
-  patient            Patient      @relation(fields: [patientId], references: [id])
+  patient            Patient      @relation(fields: [patientId], references: [id],  onDelete: Cascade)
 
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
@@ -441,7 +455,7 @@ model SocialDeterminants {
   transportation String? 
   activity String?    
   patientId          String
-  patient            Patient      @relation(fields: [patientId], references: [id])
+  patient            Patient      @relation(fields: [patientId], references: [id],  onDelete: Cascade)
 
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
@@ -452,7 +466,7 @@ model ClientSignature {
   signature    String    
   pin      String 
   patientId          String
-  patient            Patient      @relation(fields: [patientId], references: [id])
+  patient            Patient      @relation(fields: [patientId], references: [id],  onDelete: Cascade)
 
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
@@ -463,7 +477,7 @@ model ParentSignature {
   signature    String    
   pin         String
   patientId          String
-  patient            Patient      @relation(fields: [patientId], references: [id])
+  patient            Patient      @relation(fields: [patientId], references: [id],  onDelete: Cascade)
 
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
@@ -482,7 +496,7 @@ model Compliance {
   history     String
   completed     complainceStatus @default(PENDING)
   patientId      String
-  patient        Patient  @relation(fields: [patientId], references: [id])
+  patient        Patient  @relation(fields: [patientId], references: [id],  onDelete: Cascade)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
@@ -506,7 +520,7 @@ model TreatmentPlan {
   dischargePlanning String?
   agencies String?
   patientId   String
-  patient     Patient   @relation(fields: [patientId], references: [id])
+  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -523,7 +537,7 @@ model TreatmentGoals {
   comments String?
   description String?
   treatmentplanId   String
-  treatmentplan     TreatmentPlan   @relation(fields: [treatmentplanId], references: [id])
+  treatmentplan     TreatmentPlan   @relation(fields: [treatmentplanId], references: [id],  onDelete: Cascade)
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -538,7 +552,7 @@ model TreatmentObjective {
   targetDate      DateTime
   objective String
   treatmentgoalsId   String
-  treatmentgoals     TreatmentGoals   @relation(fields: [treatmentgoalsId], references: [id])
+  treatmentgoals     TreatmentGoals   @relation(fields: [treatmentgoalsId], references: [id],  onDelete: Cascade)
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -555,7 +569,7 @@ model TreatmentIntervention {
   location String
   duration Float
   treatmentobjectiveId   String
-  treatmentobjective     TreatmentObjective   @relation(fields: [treatmentobjectiveId], references: [id])
+  treatmentobjective     TreatmentObjective   @relation(fields: [treatmentobjectiveId], references: [id],  onDelete: Cascade)
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -565,7 +579,7 @@ model Questionnaire {
   id          String   @id @default(uuid())
   question String
   patientId   String
-  patient     Patient   @relation(fields: [patientId], references: [id])
+  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt

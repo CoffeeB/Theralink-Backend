@@ -72,9 +72,6 @@ export default router;
  *               dateOfBirth:
  *                 type: string
  *                 format: date
- *               medicalHistory:
- *                 type: object
- *                 additionalProperties: true
  *     responses:
  *       201:
  *         description: Patient created successfully

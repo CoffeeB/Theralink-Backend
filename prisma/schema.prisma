@@ -121,9 +121,8 @@ model Conversation {
 model Message {
   id          String   @id @default(uuid())
   body String
-  image String?
- 
-  broadcast Float?
+  image String? 
+  broadcast Boolean?
   uniCast   Boolean
   room  String?
   toUserId String

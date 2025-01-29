@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { Gender } from '@prisma/client';
+import { Gender, Race } from '@prisma/client';
 
 export const patientSchema = Joi.object({
     firstName: Joi.string().required(),
@@ -7,7 +7,11 @@ export const patientSchema = Joi.object({
     email: Joi.string().email().required(),
     phone: Joi.string().required(),
     gender: Joi.string().valid(...Object.values(Gender)).required(),
+    middleName: Joi.string().optional(),
+    nickName: Joi.string().optional(),
+    suffix: Joi.string().optional(),
+    race: Joi.string().valid(...Object.values(Race)).optional(),
     dateOfBirth: Joi.date().required(),
-    address: Joi.string().required(),
-    medicalHistory: Joi.object().optional()
+    startDate: Joi.date().optional(),
+    address: Joi.object().optional(),
 });

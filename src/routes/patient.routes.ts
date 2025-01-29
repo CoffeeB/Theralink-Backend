@@ -23,10 +23,10 @@ export default router;
  *     responses:
  *       200:
  *         description: List of patients retrieved successfully
- * 
+ *
  *   post:
  *     tags: [Patients]
- *     summary: Create new patient
+ *     summary: Create a new patient
  *     requestBody:
  *       required: true
  *       content:
@@ -40,48 +40,122 @@ export default router;
  *                 type: string
  *               email:
  *                 type: string
+ *                 format: email
+ *               middleName:
+ *                 type: string
+ *               nickName:
+ *                 type: string
+ *               suffix:
+ *                 type: string
+ *               address:
+ *                 type: object
+ *                 properties:
+ *                   street:
+ *                     type: string
+ *                   city:
+ *                     type: string
+ *                   state:
+ *                     type: string
+ *                   zipCode:
+ *                     type: string
  *               phone:
  *                 type: string
  *               gender:
  *                 type: string
- *                 enum: [MALE, FEMALE]
+ *                 enum: [MALE, FEMALE, OTHER]
+ *               race:
+ *                 type: string
+ *                 enum: [AFRICAN, WHITE, ASIAN, HISPANIC, OTHER]
+ *               startDate:
+ *                 type: string
+ *                 format: date
  *               dateOfBirth:
  *                 type: string
  *                 format: date
- *               address:
- *                 type: string
  *               medicalHistory:
  *                 type: object
- * 
+ *                 additionalProperties: true
+ *     responses:
+ *       201:
+ *         description: Patient created successfully
+ *
  * /api/patients/{id}:
  *   get:
  *     tags: [Patients]
- *     summary: Get patient by ID
+ *     summary: Get a patient by ID
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
+ *     responses:
+ *       200:
+ *         description: Patient retrieved successfully
  *   
  *   put:
  *     tags: [Patients]
- *     summary: Update patient
+ *     summary: Update patient information
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *   
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               phone:
+ *                 type: string
+ *               address:
+ *                 type: object
+ *                 properties:
+ *                   street:
+ *                     type: string
+ *                   city:
+ *                     type: string
+ *                   state:
+ *                     type: string
+ *                   zipCode:
+ *                     type: string
+ *               gender:
+ *                 type: string
+ *                 enum: [MALE, FEMALE, OTHER]
+ *               race:
+ *                 type: string
+ *                 enum: [AFRICAN, WHITE, ASIAN, HISPANIC, OTHER]
+ *               dateOfBirth:
+ *                 type: string
+ *                 format: date
+ *               medicalHistory:
+ *                 type: object
+ *                 additionalProperties: true
+ *     responses:
+ *       200:
+ *         description: Patient updated successfully
+ *
  *   delete:
  *     tags: [Patients]
- *     summary: Delete patient
+ *     summary: Delete a patient
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
+ *     responses:
+ *       204:
+ *         description: Patient deleted successfully
  */
 

@@ -102,8 +102,41 @@ model User {
   // Relations
   appointments  Appointment[]  // A user (healthcare provider) can have many appointments
   // diagnosis   Diagnosis[]
-  // Other fields based on your admin data management requirements
+  conversation Conversation[]
+  sentMessages  Message[] @relation("SentMessages")   
+  receivedMessages Message[] @relation("ToUserRelation") 
 }
+
+model Conversation {
+  id          String   @id @default(uuid())
+  lastMessage String
+  messages     Message[] 
+  userId   String
+  user     User   @relation(fields: [userId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+
+model Message {
+  id          String   @id @default(uuid())
+  body String
+  image String?
+ 
+  broadcast Float?
+  uniCast   Boolean
+  room  String?
+  toUserId String
+  toUser     User   @relation(fields: [toUserId], references: [id], name:"ToUserRelation")
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], name:"SentMessages")
+  conversationId   String
+  conversation     Conversation   @relation(fields: [conversationId], references: [id])
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
 model Patient {
   id            String    @id @default(uuid())
   firstName     String
@@ -374,8 +407,6 @@ model ContactNote {
 }
 
 
-
-
 model EducationBackground {
   id                 String       @id @default(uuid())
 
@@ -540,3 +571,4 @@ model Questionnaire {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
+

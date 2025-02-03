@@ -83,12 +83,12 @@ export default router;
  *             properties:
  *               name:
  *                 type: string
+ *               comments:
+ *                 type: string
  *               targetDate:
  *                 type: string
  *                 format: date
  *               description:
- *                 type: string
- *               comments:
  *                 type: string
  *               endDate:
  *                 type: string
@@ -96,6 +96,9 @@ export default router;
  *               startDate:
  *                 type: string
  *                 format: date
+ *               status:
+ *                 type: string
+ *                 enum: [COMPLETE, DEFERRED, DIS_CONTINUED, NEW_GOAL_CREATED, NOT_ACHIEVED, NOT_YET_BEGUN, ON_GOING]
  *     responses:
  *       201:
  *         description: Treatment Goals record created successfully
@@ -146,19 +149,22 @@ export default router;
  *             properties:    
  *               name:
  *                 type: string
+ *               comments:
+ *                 type: string
  *               targetDate:
  *                 type: string
  *                 format: date
  *               description:
- *                 type: string
- *               comments:
  *                 type: string
  *               endDate:
  *                 type: string
  *                 format: date
  *               startDate:
  *                 type: string
- *                 format: date       
+ *                 format: date
+ *               status:
+ *                 type: string
+ *                 enum: [COMPLETE, DEFERRED, DIS_CONTINUED, NEW_GOAL_CREATED, NOT_ACHIEVED, NOT_YET_BEGUN, ON_GOING]    
  *     responses:
  *       200:
  *         description: Treatment Goals record updated successfully

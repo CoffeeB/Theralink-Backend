@@ -84,37 +84,21 @@ export default router;
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               intervention:
  *                 type: string
- *               startTime:
- *                 type: string
- *                 format: date-time
- *               stepdownServices:
- *                 type: string
- *               dischargeIntervention:
- *                 type: string
- *               agencies:
- *                 type: string
- *               endTime:
+ *               servicetype:
  *                 type: string
  *                 format: date-time
- *               abilities:
+ *               stafftypes:
  *                 type: string
- *               preferences:
+ *               customstafftypes:
  *                 type: string
- *               service:
+ *               frequency:
+ *                 type: number
+ *               location:
  *                 type: string
- *               placeOfService:
- *                 type: string
- *               maintenanceRecommendation:
- *                 type: string
- *               strength:
- *                 type: string
- *               needs:
- *                 type: string
- *               endDate:
- *                 type: string
- *                 format: date
+ *               duration:
+ *                 type: number
  *     responses:
  *       201:
  *         description: TreatmentIntervention record created successfully
@@ -163,22 +147,21 @@ export default router;
  *           schema:
  *             type: object
  *             properties:
- *               treatmentInterventionType:
+ *               intervention:
  *                 type: string
- *               policyNumber:
+ *               servicetype:
  *                 type: string
- *               startDate:
+ *                 format: date-time
+ *               stafftypes:
  *                 type: string
- *                 format: date
- *               endDate:
+ *               customstafftypes:
  *                 type: string
- *                 format: date
- *               status:
+ *               frequency:
+ *                 type: number
+ *               location:
  *                 type: string
- *                 enum: [PRIMARY, COPAY]
- *               eligibilityStatus:
- *                 type: string
- *                 enum: [PENDING, ELIGIBLE, INELIGIBLE, UNDER_REVIEW, EXPIRED, REVOKED]
+ *               duration:
+ *                 type: number
  *     responses:
  *       200:
  *         description: TreatmentIntervention record updated successfully

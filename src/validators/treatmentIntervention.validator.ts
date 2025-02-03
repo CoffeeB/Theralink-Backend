@@ -5,6 +5,6 @@ export const treatmentInterventionSchema = Joi.object({
   stafftypes: Joi.string().optional(),
   customstafftypes: Joi.string().optional(),
   frequency: Joi.number().required(),
-  location: Joi.number().required(),
+  location: Joi.string().required(),
   duration: Joi.number().required(),
 });

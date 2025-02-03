@@ -82,7 +82,7 @@ export default router;
  *                 format: date-time
  *               stepdownServices:
  *                 type: string
- *               dischargePlanning:
+ *               dischargeObjective:
  *                 type: string
  *               agencies:
  *                 type: string
@@ -154,22 +154,37 @@ export default router;
  *           schema:
  *             type: object
  *             properties:
- *               treatmentPlanType:
+ *               name:
  *                 type: string
- *               policyNumber:
+ *               startTime:
  *                 type: string
- *               startDate:
+ *                 format: date-time
+ *               stepdownServices:
  *                 type: string
- *                 format: date
+ *               dischargeObjective:
+ *                 type: string
+ *               agencies:
+ *                 type: string
+ *               endTime:
+ *                 type: string
+ *                 format: date-time
+ *               abilities:
+ *                 type: string
+ *               preferences:
+ *                 type: string
+ *               service:
+ *                 type: string
+ *               placeOfService:
+ *                 type: string
+ *               maintenanceRecommendation:
+ *                 type: string
+ *               strength:
+ *                 type: string
+ *               needs:
+ *                 type: string
  *               endDate:
  *                 type: string
  *                 format: date
- *               status:
- *                 type: string
- *                 enum: [PRIMARY, COPAY]
- *               eligibilityStatus:
- *                 type: string
- *                 enum: [PENDING, ELIGIBLE, INELIGIBLE, UNDER_REVIEW, EXPIRED, REVOKED]
  *     responses:
  *       200:
  *         description: TreatmentPlan record updated successfully

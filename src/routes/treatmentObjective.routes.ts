@@ -81,34 +81,14 @@ export default router;
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               objective:
  *                 type: string
- *               startTime:
+ *               startDate:
  *                 type: string
- *                 format: date-time
- *               stepdownServices:
+ *                 format: date
+ *               targetDate:
  *                 type: string
- *               dischargeObjective:
- *                 type: string
- *               agencies:
- *                 type: string
- *               endTime:
- *                 type: string
- *                 format: date-time
- *               abilities:
- *                 type: string
- *               preferences:
- *                 type: string
- *               service:
- *                 type: string
- *               placeOfService:
- *                 type: string
- *               maintenanceRecommendation:
- *                 type: string
- *               strength:
- *                 type: string
- *               needs:
- *                 type: string
+ *                 format: date
  *               endDate:
  *                 type: string
  *                 format: date
@@ -160,22 +140,16 @@ export default router;
  *           schema:
  *             type: object
  *             properties:
- *               treatmentObjectiveType:
- *                 type: string
- *               policyNumber:
+ *               objective:
  *                 type: string
  *               startDate:
  *                 type: string
  *                 format: date
- *               endDate:
+ *               targetDate:
  *                 type: string
  *                 format: date
- *               status:
+ *               endDate:
  *                 type: string
- *                 enum: [PRIMARY, COPAY]
- *               eligibilityStatus:
- *                 type: string
- *                 enum: [PENDING, ELIGIBLE, INELIGIBLE, UNDER_REVIEW, EXPIRED, REVOKED]
  *     responses:
  *       200:
  *         description: TreatmentObjective record updated successfully

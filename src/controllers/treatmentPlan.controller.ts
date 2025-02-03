@@ -29,7 +29,7 @@ export class TreatmentPlanController {
       res.status(500).json({ error: "Failed to create TreatmentPlan" });
     }
   }
-
+  
   async getTreatmentPlans(req: CustomRequest, res: Response): Promise<void> {
     try {
       const { patientid } = req.params;

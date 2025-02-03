@@ -5,21 +5,22 @@ interface CustomRequest extends ExpressRequest {
   user?: IUser;
 }
 export class TreatmentInterventionController {
-  async createTreatmentIntervention(req: CustomRequest, res: Response): Promise<void> {
+  async createTreatmentIntervention(
+    req: CustomRequest,
+    res: Response
+  ): Promise<void> {
     try {
       const { treatmentobjectiveId } = req.params;
-      const { startDate, endDate, targetDate, ...rest } = req.body;
-      const newTreatmentIntervention = await prisma.treatmentIntervention.create({
-        data: {
-          ...rest,
-          startDate: new Date(startDate),
-          endDate: new Date(endDate),
-          targetDate: new Date(targetDate),
-          treatmentobjective: {
-            connect: { id: treatmentobjectiveId },
+      const { ...rest } = req.body;
+      const newTreatmentIntervention =
+        await prisma.treatmentIntervention.create({
+          data: {
+            ...rest,
+            treatmentobjective: {
+              connect: { id: treatmentobjectiveId },
+            },
           },
-        },
-      });
+        });
 
       res.status(201).json({
         message: "TreatmentIntervention created successfully",
@@ -31,7 +32,10 @@ export class TreatmentInterventionController {
     }
   }
 
-  async getTreatmentInterventions(req: CustomRequest, res: Response): Promise<void> {
+  async getTreatmentInterventions(
+    req: CustomRequest,
+    res: Response
+  ): Promise<void> {
     try {
       const { treatmentobjectiveId } = req.params;
       const { page = "1", limit = "10" } = req.query;
@@ -39,12 +43,13 @@ export class TreatmentInterventionController {
       const parsedPage = Math.max(1, parseInt(page as string, 10));
       const parsedLimit = Math.max(1, parseInt(limit as string, 10));
 
-      const TreatmentInterventions = await prisma.treatmentIntervention.findMany({
-        orderBy: { createdAt: "desc" },
-        where: { treatmentobjectiveId: treatmentobjectiveId },
-        skip: (parsedPage - 1) * parsedLimit,
-        take: parsedLimit,
-      });
+      const TreatmentInterventions =
+        await prisma.treatmentIntervention.findMany({
+          orderBy: { createdAt: "desc" },
+          where: { treatmentobjectiveId: treatmentobjectiveId },
+          skip: (parsedPage - 1) * parsedLimit,
+          take: parsedLimit,
+        });
 
       const totalCount = await prisma.treatmentIntervention.count({
         where: { treatmentobjectiveId: treatmentobjectiveId },
@@ -69,9 +74,10 @@ export class TreatmentInterventionController {
     try {
       const { id, treatmentobjectiveId } = req.params;
 
-      const TreatmentIntervention = await prisma.treatmentIntervention.findFirst({
-        where: { id, treatmentobjectiveId: treatmentobjectiveId },
-      });
+      const TreatmentIntervention =
+        await prisma.treatmentIntervention.findFirst({
+          where: { id, treatmentobjectiveId: treatmentobjectiveId },
+        });
 
       if (!TreatmentIntervention) {
         res.status(404).json({ error: "TreatmentIntervention not found" });
@@ -85,17 +91,17 @@ export class TreatmentInterventionController {
     }
   }
 
-  async updateTreatmentIntervention(req: CustomRequest, res: Response): Promise<void> {
+  async updateTreatmentIntervention(
+    req: CustomRequest,
+    res: Response
+  ): Promise<void> {
     try {
       const { id } = req.params;
-      const { startDate, endDate, targetDate, ...rest } = req.body;
+      const { ...rest } = req.body;
       const TreatmentIntervention = await prisma.treatmentIntervention.update({
         where: { id },
         data: {
           ...rest,
-          startDate: new Date(startDate),
-          endDate: new Date(endDate),
-          targetDate: new Date(targetDate),
         },
       });
 
@@ -109,13 +115,17 @@ export class TreatmentInterventionController {
     }
   }
 
-  async deleteTreatmentIntervention(req: CustomRequest, res: Response): Promise<void> {
+  async deleteTreatmentIntervention(
+    req: CustomRequest,
+    res: Response
+  ): Promise<void> {
     try {
       const { id, treatmentobjectiveId } = req.params;
 
-      const TreatmentIntervention = await prisma.treatmentIntervention.findFirst({
-        where: { id, treatmentobjectiveId: treatmentobjectiveId },
-      });
+      const TreatmentIntervention =
+        await prisma.treatmentIntervention.findFirst({
+          where: { id, treatmentobjectiveId: treatmentobjectiveId },
+        });
 
       if (!TreatmentIntervention) {
         res.status(404).json({ error: "TreatmentIntervention not found" });

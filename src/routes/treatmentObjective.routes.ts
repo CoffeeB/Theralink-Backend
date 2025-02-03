@@ -8,8 +8,12 @@ import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 const controller = new TreatmentObjectiveController();
-router.post("/:treatmentgoalsId", authenticate, authorize("ADMIN"), (req, res) =>
-  controller.createTreatmentObjective(req, res)
+router.post(
+  "/:treatmentgoalsId",
+  authenticate,
+  authorize("ADMIN"),
+  validateRequest(treatmentObjectiveSchema),
+  (req, res) => controller.createTreatmentObjective(req, res)
 );
 
 // Route to get all TreatmentObjectives for a patient
@@ -18,8 +22,11 @@ router.get("/:treatmentgoalsId", authenticate, authorize("ADMIN"), (req, res) =>
 );
 
 // Route to get a specific treatmentObjective by ID
-router.get("/:id/:treatmentgoalsId", authenticate, authorize("ADMIN"), (req, res) =>
-  controller.getTreatmentObjectiveById(req, res)
+router.get(
+  "/:id/:treatmentgoalsId",
+  authenticate,
+  authorize("ADMIN"),
+  (req, res) => controller.getTreatmentObjectiveById(req, res)
 );
 
 // Route to Update specific treatmentObjective
@@ -32,8 +39,11 @@ router.put(
 );
 
 // Route to delete a specific treatmentObjective
-router.delete("/:id/:treatmentgoalsId", authenticate, authorize("ADMIN"), (req, res) =>
-  controller.deleteTreatmentObjective(req, res)
+router.delete(
+  "/:id/:treatmentgoalsId",
+  authenticate,
+  authorize("ADMIN"),
+  (req, res) => controller.deleteTreatmentObjective(req, res)
 );
 
 export default router;

@@ -6,7 +6,7 @@ import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 const controller = new CollateralContactController();
-router.post("/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
+router.post("/:patientid", validateRequest(collateralContactSchema), authenticate, authorize("ADMIN"), (req, res) =>
   controller.createCollateralContact(req, res)
 );
 

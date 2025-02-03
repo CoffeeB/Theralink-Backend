@@ -6,7 +6,7 @@ import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 const controller = new EmploymentController();
-router.post("/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
+router.post("/:patientid",  validateRequest(employmentSchema), authenticate, authorize("ADMIN"), (req, res) =>
   controller.createEmployment(req, res)
 );
 

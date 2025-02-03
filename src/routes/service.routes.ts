@@ -8,8 +8,12 @@ import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 const controller = new ServiceController();
-router.post("/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
-  controller.createService(req, res)
+router.post(
+  "/:patientid",
+  authenticate,
+  authorize("ADMIN"),
+  validateRequest(serviceSchema),
+  (req, res) => controller.createService(req, res)
 );
 
 // Route to get all Services for a patient

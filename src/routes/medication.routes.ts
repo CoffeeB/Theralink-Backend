@@ -8,7 +8,7 @@ import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 const controller = new MedicationController();
-router.post("/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
+router.post("/:patientid",  validateRequest(medicationSchema), authenticate, authorize("ADMIN"), (req, res) =>
   controller.createMedication(req, res)
 );
 

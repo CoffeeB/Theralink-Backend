@@ -6,8 +6,12 @@ import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 const controller = new DocumentController();
-router.post("/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
-  controller.createDocument(req, res)
+router.post(
+  "/:patientid",
+  validateRequest(documentSchema),
+  authenticate,
+  authorize("ADMIN"),
+  (req, res) => controller.createDocument(req, res)
 );
 
 // Route to get all Documents for a patient

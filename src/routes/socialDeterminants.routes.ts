@@ -6,8 +6,12 @@ import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 const controller = new SocialDeterminantsController();
-router.post("/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
-  controller.createSocialDeterminants(req, res)
+router.post(
+  "/:patientid",
+  authenticate,
+  authorize("ADMIN"),
+  validateRequest(socialDeterminantSchema),
+  (req, res) => controller.createSocialDeterminants(req, res)
 );
 
 // Route to get all SocialDeterminants for a patient
@@ -126,7 +130,7 @@ export default router;
  *           schema:
  *             type: object
  *             properties:
-*               finance:
+ *               finance:
  *                 type: string
  *               food:
  *                 type: string

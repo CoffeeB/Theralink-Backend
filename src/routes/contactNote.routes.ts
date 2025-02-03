@@ -6,7 +6,7 @@ import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 const controller = new ContactNoteController();
-router.post("/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
+router.post("/:patientid", validateRequest(contactNoteSchema), authenticate, authorize("ADMIN"), (req, res) =>
   controller.createContactNote(req, res)
 );
 

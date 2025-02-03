@@ -6,8 +6,12 @@ import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 const controller = new ParentContactController();
-router.post("/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
-  controller.createParentContact(req, res)
+router.post(
+  "/:patientid",
+  validateRequest(parentContactSchema),
+  authenticate,
+  authorize("ADMIN"),
+  (req, res) => controller.createParentContact(req, res)
 );
 
 // Route to get all ParentContacts for a patient
@@ -75,7 +79,7 @@ export default router;
  *               lastName:
  *                 type: string
  *               relationship:
- *                 type: string 
+ *                 type: string
  *               phone:
  *                 type: string
  *               email:
@@ -137,7 +141,7 @@ export default router;
  *               lastName:
  *                 type: string
  *               relationship:
- *                 type: string 
+ *                 type: string
  *               phone:
  *                 type: string
  *               email:

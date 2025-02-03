@@ -6,7 +6,7 @@ import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 const controller = new DiagnosisController();
-router.post("/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
+router.post("/:patientid", validateRequest(diagnosisSchema), authenticate, authorize("ADMIN"), (req, res) =>
   controller.createDiagnosis(req, res)
 );
 

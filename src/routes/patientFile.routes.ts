@@ -6,7 +6,7 @@ import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 const controller = new PatientFileController();
-router.post("/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
+router.post("/:patientid", authenticate, authorize("ADMIN"),  validateRequest(patientFileSchema), (req, res) =>
   controller.createPatientFile(req, res)
 );
 

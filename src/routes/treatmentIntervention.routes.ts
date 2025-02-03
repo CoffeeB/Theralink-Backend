@@ -1,25 +1,35 @@
 import { Router } from "express";
 import { TreatmentInterventionController } from "../controllers/treatmentIntervention.controller";
 import { validateRequest } from "../middleware/validate.middleware";
-import { treatmentInterventionSchema } from "../validators/treatmentIntervaention.validator";
+import { treatmentInterventionSchema } from "../validators/treatmentIntervention.validator";
 import { authenticate, authorize } from "../middleware/auth.middleware";
 // import { treatmentInterventionSchema } from '';
 // import { insSchema } from '../validators/in.validator';
 
 const router = Router();
 const controller = new TreatmentInterventionController();
-router.post("/:treatmentobjectiveId", authenticate, authorize("ADMIN"), (req, res) =>
-  controller.createTreatmentIntervention(req, res)
+router.post(
+  "/:treatmentobjectiveId",
+  authenticate,
+  authorize("ADMIN"),
+  validateRequest(treatmentInterventionSchema),
+  (req, res) => controller.createTreatmentIntervention(req, res)
 );
 
 // Route to get all Treatment Intervention for a patient
-router.get("/:treatmentobjectiveId", authenticate, authorize("ADMIN"), (req, res) =>
-  controller.getTreatmentInterventions(req, res)
+router.get(
+  "/:treatmentobjectiveId",
+  authenticate,
+  authorize("ADMIN"),
+  (req, res) => controller.getTreatmentInterventions(req, res)
 );
 
 // Route to get a specific treatmentIntervention by ID
-router.get("/:id/:treatmentobjectiveId", authenticate, authorize("ADMIN"), (req, res) =>
-  controller.getTreatmentInterventionById(req, res)
+router.get(
+  "/:id/:treatmentobjectiveId",
+  authenticate,
+  authorize("ADMIN"),
+  (req, res) => controller.getTreatmentInterventionById(req, res)
 );
 
 // Route to Update specific treatmentIntervention
@@ -32,8 +42,11 @@ router.put(
 );
 
 // Route to delete a specific treatmentIntervention
-router.delete("/:id/:treatmentobjectiveId", authenticate, authorize("ADMIN"), (req, res) =>
-  controller.deleteTreatmentIntervention(req, res)
+router.delete(
+  "/:id/:treatmentobjectiveId",
+  authenticate,
+  authorize("ADMIN"),
+  (req, res) => controller.deleteTreatmentIntervention(req, res)
 );
 
 export default router;

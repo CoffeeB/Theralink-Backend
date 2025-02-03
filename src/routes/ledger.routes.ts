@@ -6,7 +6,7 @@ import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 const controller = new LedgerController();
-router.post("/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
+router.post("/:patientid", validateRequest(ledgerSchema), authenticate, authorize("ADMIN"), (req, res) =>
   controller.createLedger(req, res)
 );
 

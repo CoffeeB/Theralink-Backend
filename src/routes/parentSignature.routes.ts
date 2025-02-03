@@ -1,16 +1,30 @@
-import { Router } from 'express';
-import { ParentSignatureController } from '../controllers/parentSignature.controller';
-import { validateRequest } from '../middleware/validate.middleware';
-import { parentSignatureSchema } from '../validators/parentSignature.validator';
+import { Router } from "express";
+import { ParentSignatureController } from "../controllers/parentSignature.controller";
+import { validateRequest } from "../middleware/validate.middleware";
+import { parentSignatureSchema } from "../validators/parentSignature.validator";
 
 const router = Router();
 const controller = new ParentSignatureController();
 
-router.post('/', validateRequest(parentSignatureSchema), (req, res) => void controller.createParentSignature(req, res));
-router.get('/', (req, res) => void controller.getParentSignatures(req, res));
-router.get('/:id', (req, res) => void controller.getParentSignatureById(req, res));
-router.put('/:id', validateRequest(parentSignatureSchema), (req, res) => void controller.updateParentSignature(req, res));
-router.delete('/:id', (req, res) => void controller.deleteParentSignature(req, res));
+router.post(
+  "/",
+  validateRequest(parentSignatureSchema),
+  (req, res) => void controller.createParentSignature(req, res)
+);
+router.get("/", (req, res) => void controller.getParentSignatures(req, res));
+router.get(
+  "/:id",
+  (req, res) => void controller.getParentSignatureById(req, res)
+);
+router.put(
+  "/:id",
+  validateRequest(parentSignatureSchema),
+  (req, res) => void controller.updateParentSignature(req, res)
+);
+router.delete(
+  "/:id",
+  (req, res) => void controller.deleteParentSignature(req, res)
+);
 
 export default router;
 
@@ -23,7 +37,7 @@ export default router;
  *     responses:
  *       200:
  *         description: List of parentSignature retrieved successfully
- * 
+ *
  *   post:
  *     tags: [Parent Signature]
  *     summary: Create new patient
@@ -38,7 +52,7 @@ export default router;
  *                 type: string
  *               pin:
  *                 type: string
- * 
+ *
  * /api/parentSignature/{id}:
  *   get:
  *     tags: [Parent Signature]
@@ -49,7 +63,7 @@ export default router;
  *         required: true
  *         schema:
  *           type: string
- *   
+ *
  *   put:
  *     tags: [Parent Signature]
  *     summary: Update patient
@@ -59,7 +73,7 @@ export default router;
  *         required: true
  *         schema:
  *           type: string
- *   
+ *
  *   delete:
  *     tags: [Parent Signature]
  *     summary: Delete patient
@@ -70,4 +84,3 @@ export default router;
  *         schema:
  *           type: string
  */
-

@@ -6,7 +6,7 @@ import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 const controller = new EducationBackgroundController();
-router.post("/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
+router.post("/:patientid",  validateRequest(educationBackgroundSchema), authenticate, authorize("ADMIN"), (req, res) =>
   controller.createEducationBackground(req, res)
 );
 

@@ -6,7 +6,7 @@ import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 const controller = new ImmunizationController();
-router.post("/:patientid", authenticate, authorize("ADMIN"), (req, res) =>
+router.post("/:patientid", validateRequest(immunizationSchema), authenticate, authorize("ADMIN"), (req, res) =>
   controller.createImmunization(req, res)
 );
 

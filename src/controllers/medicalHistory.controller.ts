@@ -9,10 +9,11 @@ export class MedicalHistoryController {
   async createMedicalHistory(req: CustomInterface, res: Response) {
     try {
       const {patientid} = req.params
-   
+      const { date, ...rest } = req.body;
       const newMedicalHistory = await prisma.medicalHistory.create({
         data: {
-          ...req.body,
+          ...rest,
+          date: new Date(date),
           patient: {
             connect: { id: patientid },
           },
@@ -84,10 +85,12 @@ export class MedicalHistoryController {
   async updateMedicalHistory(req: CustomInterface, res: Response) {
     try {
       const { id,patientid } = req.params;
+      const { date, ...rest } = req.body;
       const medicalHistory = await prisma.medicalHistory.update({
         where: { id, patientId: patientid },
         data: {
-          ...req.body
+          ...rest,
+          date: new Date(date)
         },
       });
 

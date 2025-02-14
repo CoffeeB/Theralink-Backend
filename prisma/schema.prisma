@@ -122,6 +122,27 @@ enum dischargeReasonType {
   OTHER
 }
 
+enum SubstanceAddictionType {
+  ALCOHOL
+  NICOTINE
+  MARIJUANA
+  OPOIDS
+  STIMULANTS
+  HALLUCINOGENS
+  INHALANTS
+  SEDATIVES
+  OTHER
+}
+
+enum BehaviouralAddictionType {
+  GAMBLING_DISORDER
+  FOOD_ADDICTION
+  SEX_ADDICTION
+  SHOPPING_ADDICTION
+  EXCERCISE_ADDICTION
+  WORK_ADDICTION
+}
+
 
 model User {
   id            String    @id @default(uuid())
@@ -220,6 +241,8 @@ model Patient {
   treatmentPlan TreatmentPlan[]
   questionnaire Questionnaire[]
   discharge Discharge[]
+  medicalHistory MedicalHistory[]
+  familyMedicalHistory FamilyMedicalHistory[]
 }
 
 model Appointment {
@@ -262,6 +285,7 @@ model Diagnosis {
   id          String    @id @default(uuid())
   patientId   String
   description String
+  diagnosisCode String
   diagnosisDate DateTime @default(now())
   patient     Patient    @relation(fields: [patientId], references: [id],  onDelete: Cascade)
   createdAt   DateTime  @default(now())
@@ -454,7 +478,6 @@ model ContactNote {
 
 model EducationBackground {
   id                 String       @id @default(uuid())
-
   educationLevel          educationLevelStatus   @default(PRIMARY)         
   yearOfPassing  String       
   degree String         
@@ -623,6 +646,36 @@ model Discharge {
   reason      dischargeReasonType
   linkDocument      String
   summary String?
+  patientId   String
+  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+
+model MedicalHistory {
+  id          String   @id @default(uuid())
+  history       String
+  addictionDetails       String
+  date      DateTime
+  allergies Boolean?
+  sexualAbuse Boolean?
+  pregnantBefore Boolean?
+  expectingPregnancy Boolean?
+  abortion Boolean?
+  breastCancer Boolean?
+  substances SubstanceAddictionType[] @default([])
+  behaviours BehaviouralAddictionType[] @default([])
+  patientId   String
+  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+
+model FamilyMedicalHistory {
+  id          String   @id @default(uuid())
+  familyhistory       String
   patientId   String
   patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
   createdAt   DateTime  @default(now())

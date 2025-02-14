@@ -6,8 +6,12 @@ import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 const controller = new DiagnosisController();
-router.post("/:patientid", validateRequest(diagnosisSchema), authenticate, authorize("ADMIN"), (req, res) =>
-  controller.createDiagnosis(req, res)
+router.post(
+  "/:patientid",
+  validateRequest(diagnosisSchema),
+  authenticate,
+  authorize("ADMIN"),
+  (req, res) => controller.createDiagnosis(req, res)
 );
 
 // Route to get all Diagnosiss for a patient
@@ -72,6 +76,8 @@ export default router;
  *             properties:
  *               description:
  *                 type: string
+ *               diagnosisCode:
+ *                 type: string
  *               diagnosisDate:
  *                 type: string
  *                 format: date
@@ -124,6 +130,8 @@ export default router;
  *             type: object
  *             properties:
  *               description:
+ *                 type: string
+ *               diagnosisCode:
  *                 type: string
  *               diagnosisDate:
  *                 type: string

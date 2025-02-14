@@ -30,8 +30,10 @@ import treatmentGoalsRoutes from "./routes/treatmentGoals.routes";
 import treatmentObjectiveRoutes from "./routes/treatmentObjective.routes";
 import treatmentInterventionRoutes from "./routes/treatmentIntervention.routes";
 import dischargeRoutes from "./routes/discharge.routes";
+import medicalHistoryRoutes from "./routes/mediaclHistory.routes";
+import familyMedicalHistoryRoutes from "./routes/familyMedicalHistory.routes";
 // import redisClient from "./config/redis";
-// socialDeterminants
+// familyhistory
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -81,7 +83,9 @@ app.use("/api/treatmentGoals", treatmentGoalsRoutes);
 app.use("/api/treatmentObjective", treatmentObjectiveRoutes);
 app.use("/api/treatmentIntervention", treatmentInterventionRoutes);
 app.use("/api/discharge", dischargeRoutes);
-// treatmentGoalsRoutes
+app.use("/api/medicalHistory", medicalHistoryRoutes);
+app.use("/api/familyMedicalHistory", familyMedicalHistoryRoutes);
+// familyMedicalHistoryRoutes
 // Health check route
 
 // const publisher = redisClient;

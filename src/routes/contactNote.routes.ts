@@ -70,14 +70,22 @@ export default router;
  *           schema:
  *             type: object
  *             properties:
- *               firstName:
+ *               staff:
  *                 type: string
- *               lastName:
+ *               note:
  *                 type: string
- *               phone:
+ *               contactDate:
  *                 type: string
- *               email:
+ *                 format: date
+ *               contactTime:
  *                 type: string
+ *                 format: date
+ *               contacted:
+ *                 type: string
+ *                 enum: [AUNT, BROTHER, CAREGIVER, CLIENT, COUSIN, DAUGHTER, FATHER]
+ *               contactMethod:
+ *                 type: string
+ *                 enum: [EMAIL, FAX, IN_PERSON, NOTES_ONLY, PHONE, TEXT]
  *     responses:
  *       201:
  *         description: ContactNote record created successfully
@@ -126,14 +134,22 @@ export default router;
  *           schema:
  *             type: object
  *             properties:
- *               firstName:
+ *               staff:
  *                 type: string
- *               lastName:
+ *               note:
  *                 type: string
- *               phone:
+ *               contactDate:
  *                 type: string
- *               email:
+ *                 format: date
+ *               contactTime:
  *                 type: string
+ *                 format: date
+ *               contacted:
+ *                 type: string
+ *                 enum: [AUNT, BROTHER, CAREGIVER, CLIENT, COUSIN, DAUGHTER, FATHER]
+ *               contactMethod:
+ *                 type: string
+ *                 enum: [EMAIL, FAX, IN_PERSON, NOTES_ONLY, PHONE, TEXT]
  *     responses:
  *       200:
  *         description: ContactNote record updated successfully

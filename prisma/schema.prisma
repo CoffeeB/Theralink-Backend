@@ -94,6 +94,25 @@ enum MessageSentStatus {
   READ
 }
 
+enum contactedStatus {
+  AUNT
+  BROTHER
+  CAREGIVER
+  CLIENT
+  COUSIN
+  DAUGHTER
+  FATHER
+}
+
+enum contactMethodStatus {
+  EMAIL
+  FAX
+  IN_PERSON
+  NOTES_ONLY
+  PHONE
+  TEXT
+}
+
 model User {
   id            String    @id @default(uuid())
   email         String    @unique
@@ -409,10 +428,12 @@ model CollateralContact {
 
 model ContactNote {
   id           String    @id @default(uuid())
-  firstName     String
-  lastName      String
-  phone        String
-  email        String?
+  staff     String
+  contacted     contactedStatus
+  contactDate        DateTime
+  contactTime        DateTime
+  contactMethod      contactMethodStatus
+  note       String
   patientId    String
   patient      Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
   createdAt    DateTime  @default(now())

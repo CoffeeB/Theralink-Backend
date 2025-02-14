@@ -7,5 +7,6 @@ export const insuranceSchema = Joi.object({
     endDate: Joi.date().optional(),
     status: Joi.string().valid(...Object.values(insuranceStatus)).required(),
     eligibilityStatus: Joi.string().valid(...Object.values(eligibilityStatus)).required(),
+
 });
 // treatmentPlan

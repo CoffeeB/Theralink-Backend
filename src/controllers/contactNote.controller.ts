@@ -8,10 +8,12 @@ export class ContactNoteController {
   async createContactNote(req: CustomRequest, res: Response): Promise<void> {
     try {
       const { patientid } = req.params;
-      const { ...rest } = req.body;
+      const { contactDate, contactTime, ...rest } = req.body;
       const newContactNote = await prisma.contactNote.create({
         data: {
           ...rest,
+          contactTime: new Date(contactTime),
+          contactDate: new Date(contactDate),
           patient: {
             connect: { id: patientid },
           },
@@ -82,11 +84,13 @@ export class ContactNoteController {
   async updateContactNote(req: CustomRequest, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      const { ...rest } = req.body;
+      const { contactTime, contactDate, ...rest } = req.body;
       const ContactNote = await prisma.contactNote.update({
         where: { id },
         data: {
           ...rest,
+          contactTime: new Date(contactTime),
+          contactDate: new Date(contactDate),
         },
       });
 

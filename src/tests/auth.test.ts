@@ -1,10 +1,10 @@
 import request from 'supertest';
-import { app } from '../app';
+import { httpServer } from '../app';
 
 describe('Authentication API', () => {
     describe('POST /api/auth/signup', () => {
         it('should validate signup request', async () => {
-            const response = await request(app)
+            const response = await request(httpServer)
                 .post('/api/auth/signup')
                 .send({ 
                     email: 'test@theralink.com', 
@@ -18,7 +18,7 @@ describe('Authentication API', () => {
         });
 
         it('should reject invalid signup data', async () => {
-            const response = await request(app)
+            const response = await request(httpServer)
                 .post('/api/auth/signup')
                 .send({ 
                     email: 'invalid-email', 
@@ -31,7 +31,7 @@ describe('Authentication API', () => {
 
     describe('POST /api/auth/login', () => {
         it('should validate login request', async () => {
-            const response = await request(app)
+            const response = await request(httpServer)
                 .post('/api/auth/login')
                 .send({ 
                     username: 'testuser', 

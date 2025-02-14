@@ -1,7 +1,15 @@
 import Joi from "joi";
+import { contactMethodStatus, contactedStatus } from "@prisma/client";
+
 export const contactNoteSchema = Joi.object({
-  firstName: Joi.string().required(),
-  lastName: Joi.string().required(),
-  email: Joi.string().email().required(),
-  phone: Joi.string().required(),
+  staff: Joi.string().required(),
+  note: Joi.string().required(),
+  contactDate: Joi.date().required(),
+  contactTime: Joi.date().required(),
+  contactMethod: Joi.string()
+    .valid(...Object.values(contactMethodStatus))
+    .required(),
+    contacted: Joi.string()
+    .valid(...Object.values(contactedStatus))
+    .required(),
 });

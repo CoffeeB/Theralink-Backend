@@ -29,6 +29,7 @@ import treatmentPlanRoutes from "./routes/treatmentPlan.routes";
 import treatmentGoalsRoutes from "./routes/treatmentGoals.routes";
 import treatmentObjectiveRoutes from "./routes/treatmentObjective.routes";
 import treatmentInterventionRoutes from "./routes/treatmentIntervention.routes";
+import dischargeRoutes from "./routes/discharge.routes";
 // import redisClient from "./config/redis";
 // socialDeterminants
 
@@ -79,6 +80,7 @@ app.use("/api/treatmentPlan", treatmentPlanRoutes);
 app.use("/api/treatmentGoals", treatmentGoalsRoutes);
 app.use("/api/treatmentObjective", treatmentObjectiveRoutes);
 app.use("/api/treatmentIntervention", treatmentInterventionRoutes);
+app.use("/api/discharge", dischargeRoutes);
 // treatmentGoalsRoutes
 // Health check route
 

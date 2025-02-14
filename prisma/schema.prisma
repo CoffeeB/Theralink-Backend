@@ -113,6 +113,16 @@ enum contactMethodStatus {
   TEXT
 }
 
+enum dischargeReasonType {
+  DECLINED
+  NO_IMPROVEMENT
+  REFERRED_OUT
+  REFUSED_TREATMENT
+  SUCCESSFULL_DISCHARGE
+  OTHER
+}
+
+
 model User {
   id            String    @id @default(uuid())
   email         String    @unique
@@ -211,6 +221,7 @@ model Patient {
   complaince Compliance[]
   treatmentPlan TreatmentPlan[]
   questionnaire Questionnaire[]
+  discharge Discharge[]
 }
 
 model Appointment {
@@ -606,3 +617,16 @@ model Questionnaire {
   updatedAt   DateTime  @updatedAt
 }
 
+
+
+model Discharge {
+  id          String   @id @default(uuid())
+  dischargeDate       String
+  reason      dischargeReasonType
+  linkDocument      String
+  summary String?
+  patientId   String
+  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}

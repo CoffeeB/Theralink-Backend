@@ -36,6 +36,7 @@ import messageRoutes from "./routes/message.routes";
 import conversationRoutes from "./routes/conversation.routes";
 import { createAdapter } from "@socket.io/redis-streams-adapter";
 import redisClient from "./config/redis";
+import setupMessageSocket from "./sockets/message.socket";
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -91,43 +92,7 @@ app.use("/api/familyMedicalHistory", familyMedicalHistoryRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/conversation", conversationRoutes);
 
-const connections = new Map();
-io.on("connection", (socket) => {
-  // console.log(`User Connected: ${socket.id}`);
-
-  // join dm room Event
-  socket.on("register_user", async (data) => {
-    connections.set(data.userId, socket.id);
-    console.log("Number of Connections", connections)
-  });
-
-  // Send dm Event
-  socket.on("send_dm", async (data) => {
-    const { toUserId } = data;
-    if (connections.has(toUserId)) {
-       const toSockerUserId = connections.get(toUserId);
-      io.to(toSockerUserId).emit("receive_dm", data);
-    }
-  });
-
-  // Start Typing Event
-  socket.on("user_typing", async (data) => {
-    const { toUserId } = data;
-    if (connections.has(toUserId)) {
-      const toSockerUserId = connections.get(toUserId);
-      io.to(toSockerUserId).emit("user_typing", { user: data.userId });
-    }
-  });
-
-  // Stopped Typing Event
-  socket.on("user_stopped_typing", async (data) => {
-    const { toUserId } = data;
-    if (connections.has(toUserId)) {
-      const toSockerUserId = connections.get(toUserId);
-      io.to(toSockerUserId).emit("user_stopped_typing", { user: data.userId });
-    }
-  });
-});
+setupMessageSocket(io)
 
 app.get("/", (_req, res) => {
   res.json({ status: "API is running" });

@@ -1,0 +1,122 @@
+openapi: 3.0.0
+info:
+  title: WebSocket API for Chat Messages
+  version: 1.0.0
+  description: WebSocket API for real-time chat messages using Socket.io
+
+servers:
+  - url: "wss://theralink-backend.onrender.com"
+    description: Production WebSocket Server
+  - url: "ws://localhost:3000"
+    description: Development WebSocket Server
+
+paths: {}
+
+components:
+  schemas:
+    SendMessage:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Sender's User ID
+        subject:
+          type: string
+          description: Message subject
+        toUserId:
+          type: string
+          description: Receiver's User ID
+        body:
+          type: string
+          description: The actual message content
+        conversationId:
+          type: string
+          description: ID of the conversation
+      required:
+        - userId
+        - toUserId
+        - body
+        - conversationId
+        - subject
+
+    ReceiveMessage:
+      type: object
+      properties:
+        userId:
+          type: string
+        toUserId:
+          type: string
+        body:
+          type: string
+        subject:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        conversationId:
+          type: string
+      required:
+        - userId
+        - toUserId
+        - body
+        - timestamp
+        - subject
+
+    RegisterUser:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: The ID of the user registering for WebSocket events
+      required:
+        - userId
+
+    UserTyping:
+      type: object
+      properties:
+        userId:
+          type: string
+        toUserId:
+          type: string
+      required:
+        - userId
+        - toUserId
+
+websockets:
+  /ws:
+    post:
+      summary: Connect to WebSocket
+      description: Establishes a WebSocket connection.
+      responses:
+        "101":
+          description: Switching Protocols (Connection Established)
+
+  /ws/events:
+    post:
+      summary: WebSocket Events
+      description: Events that can be sent and received over the WebSocket connection.
+      requestBody:
+        description: WebSocket events for chat functionality
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  type: string
+                  enum:
+                    - register_user
+                    - send_dm
+                    - receive_dm
+                    - user_typing
+                    - user_stopped_typing
+                data:
+                  oneOf:
+                    - $ref: "#/components/schemas/SendMessage"
+                    - $ref: "#/components/schemas/ReceiveMessage"
+                    - $ref: "#/components/schemas/RegisterUser"
+                    - $ref: "#/components/schemas/UserTyping"
+      responses:
+        "200":
+          description: Successfully processed the event

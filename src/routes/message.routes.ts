@@ -35,20 +35,19 @@ router.delete(
 );
 
 export default router;
-
 /**
  * @swagger
  * /api/message:
  *   get:
  *     tags: [Message]
- *     summary: Get all message
+ *     summary: Get all messages
  *     responses:
  *       200:
- *         description: List of message retrieved successfully
- *
+ *         description: List of messages retrieved successfully
+ * 
  *   post:
  *     tags: [Message]
- *     summary: Create new patient
+ *     summary: Create new message
  *     requestBody:
  *       required: true
  *       content:
@@ -75,27 +74,39 @@ export default router;
  *               status:
  *                 type: string
  *                 enum: [DELIVERED, SENT, READ]
- *      responses:
- *         201:
- *           description: CollateralContact record created successfully
+ *     responses:
+ *       201:
+ *         description: Message record created successfully
+ * 
  * /api/message/{id}:
  *   get:
  *     tags: [Message]
- *     summary: Get patient by ID
+ *     summary: Get message by ID
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
+ *     responses:
+ *       200:
+ *         description: Message retrieved successfully
+ *       404:
+ *         description: Message not found
  *
  *   put:
  *     tags: [Message]
- *     summary: Update patient
+ *     summary: Update message
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
  *           schema:
  *             type: object
  *             properties:
@@ -118,13 +129,26 @@ export default router;
  *               status:
  *                 type: string
  *                 enum: [DELIVERED, SENT, READ]
+ *     responses:
+ *       200:
+ *         description: Message updated successfully
+ *       400:
+ *         description: Invalid request data
+ *       404:
+ *         description: Message not found
+ *
  *   delete:
  *     tags: [Message]
- *     summary: Delete patient
+ *     summary: Delete message
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
+ *     responses:
+ *       200:
+ *         description: Message deleted successfully
+ *       404:
+ *         description: Message not found
  */

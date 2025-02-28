@@ -1,7 +1,31 @@
 import prisma from "../config/database";
 
 export class MessageService {
-  
+  async createMessageService(
+    body: string,
+    subject: string,
+    userId: string,
+    conversationId: string,
+    toUserId: string
+  ) {
+    const newMessage = await prisma.message.create({
+      data: {
+        body,
+        subject,
+        userId,
+        toUserId,
+        conversationId,
+      },
+    });
+
+    // Update the conversation's last message
+    await prisma.conversation.update({
+      where: { id: conversationId },
+      data: { lastMessage: body },
+    });
+
+    return newMessage;
+  }
   async updateMessageReadStatus(id: string, userId: string, isRead: boolean) {
     const newMessage = await prisma.message.update({
       where: {

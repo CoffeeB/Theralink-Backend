@@ -46,7 +46,7 @@ export default function setupMessageSocket(io: Server) {
     // Stopped Typing Event
     socket.on("user_stopped_typing", async (data) => {
       const { toUserId } = data;
-      const toSockerUserId = await redisClient.get(toUserId);
+      const toSockerUserId = await redisClient.get(`active_users:${toUserId}`);
 
       if (toSockerUserId) {
         io.to(`user:${toSockerUserId}`).emit("user_stopped_typing", {

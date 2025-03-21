@@ -6,7 +6,8 @@ export class MessageService {
     subject: string,
     userId: string,
     conversationId: string,
-    toUserId: string
+    toUserId: string,
+    image: string
   ) {
     const newMessage = await prisma.message.create({
       data: {
@@ -15,6 +16,7 @@ export class MessageService {
         userId,
         toUserId,
         conversationId,
+        image,
       },
     });
 

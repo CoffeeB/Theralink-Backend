@@ -28,7 +28,7 @@ export default function setupMessageSocket(io: Server) {
       );
       if (toSockerUserId) {
         // create the message from db
-        io.to(`user:${toSockerUserId}`).emit("receive_dm", message);
+        io.to(`user:${toUserId}`).emit("receive_dm", message);
       }
       io.to(`user:${userId}`).emit("receive_dm", message);
     });

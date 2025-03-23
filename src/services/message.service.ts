@@ -3,7 +3,7 @@ import prisma from "../config/database";
 export class MessageService {
   async createMessageService(
     body: string,
-    subject?: string,
+    subject: string,
     userId: string,
     conversationId: string,
     toUserId: string,

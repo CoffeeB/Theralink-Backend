@@ -4,6 +4,8 @@ import { Gender, Race } from '@prisma/client';
 export const patientSchema = Joi.object({
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
+    prefix: Joi.string().optional(),
+    ssn: Joi.string().optional(),
     email: Joi.string().email().required(),
     phone: Joi.string().required(),
     gender: Joi.string().valid(...Object.values(Gender)).required(),

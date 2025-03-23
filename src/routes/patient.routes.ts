@@ -34,6 +34,12 @@ export default router;
  *           schema:
  *             type: object
  *             properties:
+ *               prefix:
+ *                 type: string
+ *               comments:
+ *                 type: string
+ *               ssn:
+ *                 type: string
  *               firstName:
  *                 type: string
  *               lastName:

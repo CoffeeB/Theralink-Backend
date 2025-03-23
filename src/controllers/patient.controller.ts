@@ -1,19 +1,50 @@
 import { Request, Response } from "express";
 import prisma from "../config/database";
 import { IPatient } from "../interfaces/patient.interfaces";
+import { InsuranceService } from "src/services/insurance.service";
 
 export class PatientController {
   async createPatient(req: Request<{}, {}, IPatient>, res: Response) {
     try {
-      const { email, dateOfBirth, ...rest } = req.body;
-   
+      const {
+        email,
+        dateOfBirth,
+        insurance,
+        gender,
+        phone, // Explicitly destructure phone
+        address,
+        race,
+        ...rest
+      } = req.body;
+      //  const insuranceData =  {}
       const newPatient = await prisma.patient.create({
         data: {
           ...rest,
+          gender,
+          race,
           email,
+          phone: phone || undefined,
           dateOfBirth: new Date(dateOfBirth),
+          address: address
+            ? {
+                street: address.street,
+                city: address.city,
+                state: address.state,
+                zipCode: address.zipCode,
+              }
+            : undefined,
         },
       });
+      const insuranceService = new InsuranceService();
+      if (newPatient) {
+        await insuranceService.createInsuranceService(
+          insurance.startDate,
+          insurance.endDate!,
+          newPatient?.id,
+          insurance.policyNumber,
+          insurance.insuranceType
+        );
+      }
 
       return res.status(201).json({
         message: "Patient created successfully",

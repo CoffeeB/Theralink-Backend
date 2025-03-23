@@ -15,12 +15,14 @@ enum Role {
 enum Gender {
   MALE
   FEMALE
+  OTHER
 }
 
 enum Race {
   AFRICAN
   WHITE
   ASIAN
+  HISPANIC
 }
 
 enum LedgerType {
@@ -212,9 +214,12 @@ model Patient {
   lastName      String
   middleName      String?
   nickName      String?
-  suffix      String?
+  suffix        String?
+  prefix        String?
+  comments        String?
+  ssn        String?
   email         String    @unique
-  phone         String
+  phone         String?
   gender        Gender
   race        Race?
   startDate     DateTime?

@@ -23,6 +23,7 @@ enum Race {
   WHITE
   ASIAN
   HISPANIC
+  OTHER
 }
 
 enum LedgerType {

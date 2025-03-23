@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../config/database";
 import { IPatient } from "../interfaces/patient.interfaces";
-import { InsuranceService } from "src/services/insurance.service";
+import { InsuranceService } from "../services/insurance.service";
 
 export class PatientController {
   async createPatient(req: Request<{}, {}, IPatient>, res: Response) {

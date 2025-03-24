@@ -16,4 +16,5 @@ export const patientSchema = Joi.object({
     dateOfBirth: Joi.date().required(),
     startDate: Joi.date().optional(),
     address: Joi.object().optional(),
+    insurance: Joi.object().optional(),
 });

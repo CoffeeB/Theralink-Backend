@@ -6,6 +6,7 @@ export const patientSchema = Joi.object({
     lastName: Joi.string().required(),
     prefix: Joi.string().optional(),
     ssn: Joi.string().optional(),
+    comments: Joi.string().optional(),
     email: Joi.string().email().required(),
     phone: Joi.string().required(),
     gender: Joi.string().valid(...Object.values(Gender)).required(),

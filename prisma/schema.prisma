@@ -219,7 +219,7 @@ model Patient {
   prefix        String?
   comments        String?
   ssn        String?
-  email         String    @unique
+  email         String  
   phone         String?
   gender        Gender
   race        Race?

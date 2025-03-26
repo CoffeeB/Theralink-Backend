@@ -13,7 +13,7 @@ export class InsuranceService {
         policyNumber,
         insuranceType,
         startDate: new Date(startDate),
-        endDate: new Date(endDate),
+        endDate: endDate ? new Date(endDate) : null,
         patient: {
           connect: { id: patientid },
         },

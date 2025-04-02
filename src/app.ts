@@ -44,7 +44,7 @@ const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
   adapter: createAdapter(redisClient),
   cors: {
-    origin: [process.env.FRONTEND_URL || "http://localhost:3000"],
+    origin: [process.env.FRONTEND_URL, "http://localhost:3000"],
   },
 });
 // Middleware

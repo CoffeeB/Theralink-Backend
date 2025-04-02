@@ -11,7 +11,7 @@ export default function setupMessageSocket(io: Server) {
     socket.on("register_user", async ({ userId }) => {
       await redisClient.set(`active_users:${userId}`, JSON.stringify(userId));
       socket.join(`user:${userId}`); // join a room
-      io.emit;
+      io.emit("user_joined", `The user with ${userId} has been connected`)
     });
 
     // Send dm Event

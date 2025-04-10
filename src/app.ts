@@ -91,7 +91,7 @@ app.use("/api/discharge", dischargeRoutes);
 app.use("/api/medicalHistory", medicalHistoryRoutes);
 app.use("/api/familyMedicalHistory", familyMedicalHistoryRoutes);
 app.use("/api/message", messageRoutes);
-app.use("/api/conversation", conversationRoutes);
+app.use("/api/conversations", conversationRoutes);
 app.use("/api/users", userRoutes);
 setupMessageSocket(io)
 

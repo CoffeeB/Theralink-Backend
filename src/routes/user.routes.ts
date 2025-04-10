@@ -8,9 +8,8 @@ const router = Router();
 const controller = new UserController();
 router.get(
   "/",
-  validateRequest(userSchema),
   authenticate,
-  authorize("ADMIN", "STAFF"),
+  authorize("ADMIN", "STAFF", "CLIENT"),
   (req, res) => void controller.getUsers(req, res)
 );
 

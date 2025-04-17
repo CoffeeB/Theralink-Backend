@@ -73,7 +73,18 @@ export class ConversationController {
         where: { participants: { some: { userId: user.id } } },
         skip: (parsedPage - 1) * parsedLimit,
         take: parsedLimit,
-        include: { participants: true},
+        include: {
+          participants: {
+            select: {
+              user: {
+                select: {
+                  role: true,
+                  username:true
+                },
+              },
+            },
+          },
+        },
       });
       const totalCount = await prisma.conversation.count({
         where: {

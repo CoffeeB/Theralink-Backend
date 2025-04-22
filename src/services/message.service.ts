@@ -29,7 +29,9 @@ export class MessageService {
       where: { id: conversationId },
     });
     if (!conversation) {
-      throw new Error(`Conversation with conversationId ${conversationId} does not exist`);
+      throw new Error(
+        `Conversation with conversationId ${conversationId} does not exist`
+      );
     }
     const newMessage = await prisma.message.create({
       data: {
@@ -112,7 +114,7 @@ export class MessageService {
   async getAllMessageService(id: string) {
     const newMessage = await prisma.message.findMany({
       where: {
-        conversationId:id,
+        conversationId: id,
       },
     });
 
@@ -128,5 +130,66 @@ export class MessageService {
     });
 
     return "Message deleted successfully";
+  }
+
+  async getUserMessageCounts(userId: string) {
+    // Validate user exists
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+  
+    if (!user) {
+      throw new Error(`User with ID ${userId} does not exist`);
+    }
+  
+    // Fetch message counts using Prisma count queries
+    const [totalMessages, readMessages, unreadMessages, inboxMessages, importantMessages] = await Promise.all([
+      // Total messages (sent or received, excluding deleted)
+      prisma.message.count({
+        where: {
+          OR: [{ userId }, { toUserId: userId }],
+          isDeleted: false,
+        },
+      }),
+      // Read messages (received by user)
+      prisma.message.count({
+        where: {
+          toUserId: userId,
+          isRead: true,
+          isDeleted: false,
+        },
+      }),
+      // Unread messages (received by user)
+      prisma.message.count({
+        where: {
+          toUserId: userId,
+          isRead: false,
+          isDeleted: false,
+        },
+      }),
+      // Inbox messages (received by user, excluding deleted)
+      prisma.message.count({
+        where: {
+          toUserId: userId,
+          isDeleted: false,
+        },
+      }),
+      // Important (liked) messages (received by user)
+      prisma.message.count({
+        where: {
+          toUserId: userId,
+          isImportant: true,
+          isDeleted: false,
+        },
+      }),
+    ]);
+  
+    return {
+      totalMessages,
+      readMessages,
+      unreadMessages,
+      inboxMessages,
+      importantMessages,
+    };
   }
 }

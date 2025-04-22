@@ -21,6 +21,13 @@ router.get(
 );
 
 router.put(
+  "/aggregation",
+  authenticate, // Added
+  validateRequest(messageSchema),
+  (req, res) => void controller.getUserMessage(req, res)
+);
+
+router.put(
   "/:id",
   authenticate, // Added
   validateRequest(messageSchema),
@@ -83,6 +90,16 @@ export default router;
  *     responses:
  *       200:
  *         description: All User Message has been retrieved successfully
+ *       404:
+ *         description: Message not found
+ *
+ * /api/message/aggregation:
+ *   get:
+ *     tags: [Message]
+ *     summary: Get All message Aggregated message of a User
+ *     responses:
+ *       200:
+ *         description: Fetching all aggregated User's Message has been retrieved successfully
  *       404:
  *         description: Message not found
  *

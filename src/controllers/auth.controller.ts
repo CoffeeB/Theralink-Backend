@@ -15,7 +15,7 @@ export class AuthController {
 
   constructor() {
     this.emailService = new EmailService();
-    console.log("Email service initialized"); // Add this log
+    // console.log("Email service initialized");
   }
 
   signup = async (

@@ -170,6 +170,9 @@ model User {
   receivedMessages Message[] @relation("ToUserRelation") 
   patient       Patient?  @relation("UserToPatient")
   patientId     String?   @unique
+
+  staff      Staff?  @relation("UserToStaff")
+  staffId     String?   @unique
 }
 
 model Conversation {
@@ -221,6 +224,84 @@ model Message {
   @@index([createdAt])
   @@index([updatedAt])
 }
+
+model Staff {
+  id            String    @id @default(uuid())
+  firstName     String
+  lastName      String
+  middleName      String?
+  ssn      String
+  userName      String?
+  suffix      String?
+  email         String  
+  phone         String?
+  gender        Gender
+  race        Race?
+  positionEffectiveDate     DateTime
+  dateOfBirth   DateTime
+  accessLevel      String?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  staffSignature  StaffSignature[]
+  staffPosition StaffPosition[]
+  staffCertifcation StaffCertifcation[]
+  staffFile StaffFile[]
+  userId        String?   @unique
+  user          User?     @relation(name:"UserToStaff", fields: [userId], references: [id])
+}
+
+
+model StaffSignature {
+  id                String       @id @default(uuid())
+  signature    String    
+  pin      String 
+  staffId          String
+  staff            Staff      @relation(fields: [staffId], references: [id],  onDelete: Cascade)
+
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+}
+
+model StaffPosition {
+  id                String       @id @default(uuid())
+  name    String    
+  startDate     DateTime
+  endBirth   DateTime
+  staffId          String
+  staff            Staff      @relation(fields: [staffId], references: [id],  onDelete: Cascade)
+
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+}
+
+model StaffCertifcation {
+  id                 String       @id @default(uuid())
+  name String        
+  yearOfPassing  String       
+  grade String         
+  staffId          String
+  staff            Staff      @relation(fields: [staffId], references: [id],  onDelete: Cascade)
+
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+}
+
+model StaffFile {
+  id           String   @id @default(uuid())
+  staffId    String
+  fileName     String  
+  fileType     String  
+  fileUrl      String   
+  description  String?  
+  staff      Staff  @relation(fields: [staffId], references: [id],  onDelete: Cascade)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+
+
 
 model Patient {
   id            String    @id @default(uuid())

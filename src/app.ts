@@ -34,6 +34,7 @@ import medicalHistoryRoutes from "./routes/mediaclHistory.routes";
 import familyMedicalHistoryRoutes from "./routes/familyMedicalHistory.routes";
 import messageRoutes from "./routes/message.routes";
 import conversationRoutes from "./routes/conversation.routes";
+import staffRoutes from "./routes/staff.routes";
 import userRoutes from "./routes/user.routes";
 import { createAdapter } from "@socket.io/redis-streams-adapter";
 import redisClient from "./config/redis";
@@ -59,7 +60,6 @@ app.use(
     credentials: true,
   })
 );
-
 
 app.get("/", (_req, res) => {
   res.json({ status: "API is running" });
@@ -99,8 +99,8 @@ app.use("/api/familyMedicalHistory", familyMedicalHistoryRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/conversations", conversationRoutes);
 app.use("/api/users", userRoutes);
-setupMessageSocket(io)
-
+app.use("/api/staffs", staffRoutes);
+setupMessageSocket(io);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 

@@ -16,10 +16,10 @@ export interface IStaff {
   firstName: string;
   comments?: string;
   prefix?: string;
-  ssn?: string;
+  ssn: string;
   nickname?: string;
   middlename: string;
-  suffix?: string;
+  suffix?: string | undefined;
   lastName: string;
   email: string;
   phone?: string | undefined;

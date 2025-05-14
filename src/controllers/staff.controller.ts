@@ -13,6 +13,7 @@ export class StaffController {
         phone,
         positionEffectiveDate,
         race,
+        ssn,
         ...rest
       } = req.body;
       const [newStaff, _newUser] = await prisma.$transaction(
@@ -22,6 +23,7 @@ export class StaffController {
               ...rest,
               gender,
               race,
+              ssn,
               email,
               phone: phone || undefined,
               dateOfBirth: new Date(dateOfBirth),

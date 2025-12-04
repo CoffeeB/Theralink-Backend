@@ -2,8 +2,8 @@ import { Router, Request, Response } from "express";
 import { AuthController } from "../controllers/auth.controller";
 import { validateRequest } from "../middleware/validate.middleware";
 import { signupSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema } from "../validators/auth.validator";
-import { authenticate } from "src/middleware/auth.middleware";
-import { tokenBlacklist } from "src/utils/tokenBlacklist";
+import { authenticate } from "../middleware/auth.middleware";
+import { tokenBlacklist } from "../utils/tokenBlacklist";
 
 const router = Router();
 const controller = new AuthController();

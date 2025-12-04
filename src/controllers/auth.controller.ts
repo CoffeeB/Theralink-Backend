@@ -147,7 +147,12 @@ export class AuthController {
         where: { id: userId },
         include: {
           staff: true,
-          patient: true,
+          patient: {
+            include: {
+              document: true,
+              appointments: true,
+            },
+          },
         },
       });
 

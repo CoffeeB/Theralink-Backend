@@ -6,6 +6,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 enum Role {
   ADMIN
   CLIENT
@@ -42,30 +43,28 @@ enum insuranceStatus {
   COPAY
 }
 
-
 enum eligibilityStatus {
- PENDING        
-  ELIGIBLE     
-  INELIGIBLE  
-  UNDER_REVIEW 
-  EXPIRED  
-  REVOKED  
+  PENDING
+  ELIGIBLE
+  INELIGIBLE
+  UNDER_REVIEW
+  EXPIRED
+  REVOKED
 }
 
 enum educationLevelStatus {
- ELEMENTARY        
-  PRIMARY     
-  HIGHSCHOOL  
-  TERTIARY 
+  ELEMENTARY
+  PRIMARY
+  HIGHSCHOOL
+  TERTIARY
 }
 
-
 enum contactTypeStatus {
-  TEACHERS        
-  AFTER_SCHOOL     
-  COMMUNITY_CENTERS  
+  TEACHERS
+  AFTER_SCHOOL
+  COMMUNITY_CENTERS
   OTHERS
-  PRINCIPAL 
+  PRINCIPAL
   GUIDANCE_COUNSELORS
 }
 
@@ -77,12 +76,12 @@ enum complainceStatus {
 
 enum paymentTypeStatus {
   CASH
-   CHECK
-   CREDIT_CARD
-   DEBIT_CARD 
+  CHECK
+  CREDIT_CARD
+  DEBIT_CARD
 }
 
-enum treatmentGoalsStatus{
+enum treatmentGoalsStatus {
   COMPLETE
   DEFERRED
   DIS_CONTINUED
@@ -93,7 +92,7 @@ enum treatmentGoalsStatus{
 }
 
 enum MessageSentStatus {
- PENDING
+  PENDING
   SENT
   DELIVERED
   FAILED
@@ -156,37 +155,36 @@ enum SmokingStatus {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
-  username      String    @unique
-  firstName     String?
-  lastName      String?
-  middleName      String?
-  password      String
-  role          Role      @default(CLIENT)
-  resetToken    String?
+  id               String    @id @default(uuid())
+  email            String    @unique
+  username         String    @unique
+  firstName        String?
+  lastName         String?
+  middleName       String?
+  password         String
+  role             Role      @default(CLIENT)
+  resetToken       String?
   resetTokenExpiry DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
   // Relations
   clinic        Clinic[]
-  appointments  Appointment[] 
-  conversations  ConversationParticipant[]
-  
-  sentMessages  Message[] @relation("SentMessages")   
-  receivedMessages Message[] @relation("ToUserRelation") 
-  
-  patient       Patient?  @relation("UserToPatient")
-  patientId     String?   @unique
+  appointments  Appointment[]
+  conversations ConversationParticipant[]
 
-  staff      Staff?  @relation("UserToStaff")
-  staffId     String?   @unique
-  
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ToUserRelation")
+
+  patient   Patient? @relation("UserToPatient")
+  patientId String?  @unique
+
+  staff   Staff?  @relation("UserToStaff")
+  staffId String? @unique
 }
 
 model Clinic {
-  id           String @id @default(uuid())
+  id           String  @id @default(uuid())
   clinicName   String
   addressLine1 String?
   addressLine2 String?
@@ -197,15 +195,18 @@ model Clinic {
   logoUrl      String?
   email        String?
   website      String?
+  User         User?   @relation(fields: [userId], references: [id])
+  userId       String?
 }
 
 model Conversation {
-  id          String                @id @default(uuid())
-  lastMessage String?               // Optional, updated dynamically
-  messages    Message[]             
+  id           String                    @id @default(uuid())
+  lastMessage  String? // Optional, updated dynamically
+  messages     Message[]
   participants ConversationParticipant[]
-  createdAt   DateTime             @default(now())
-  updatedAt   DateTime             @updatedAt
+  createdAt    DateTime                  @default(now())
+  updatedAt    DateTime                  @updatedAt
+
   @@index([createdAt])
   @@index([updatedAt])
 }
@@ -216,30 +217,31 @@ model ConversationParticipant {
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   joinedAt       DateTime     @default(now())
-  @@id([conversationId, userId]) 
+
+  @@id([conversationId, userId])
 }
 
 model Message {
-  id          String   @id @default(uuid())
-  body String
-  subject String?
-  image String[]
+  id       String             @id @default(uuid())
+  body     String
+  subject  String?
+  image    String[]
   toUserId String
-  status MessageSentStatus?
+  status   MessageSentStatus?
 
-  isRead         Boolean  @default(false)  
-  isImportant    Boolean  @default(false)  
-  isSpam         Boolean  @default(false)  
-  isDeleted      Boolean  @default(false)  
+  isRead      Boolean @default(false)
+  isImportant Boolean @default(false)
+  isSpam      Boolean @default(false)
+  isDeleted   Boolean @default(false)
 
-  toUser     User   @relation(fields: [toUserId], references: [id],  onDelete: Cascade, name:"ToUserRelation")
-  userId   String
-  user     User   @relation(fields: [userId], references: [id],  onDelete: Cascade, name:"SentMessages")
-  conversationId   String
-  conversation     Conversation   @relation(fields: [conversationId], references: [id],  onDelete: Cascade)
-  
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  toUser         User         @relation(fields: [toUserId], references: [id], onDelete: Cascade, name: "ToUserRelation")
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade, name: "SentMessages")
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([isRead, userId])
   @@index([isImportant, userId])
@@ -249,249 +251,249 @@ model Message {
 }
 
 model Staff {
-  id            String    @id @default(uuid())
-  firstName     String
-  lastName      String
-  middleName      String?
-  ssn      String
-  userName      String?
-  suffix      String?
-  email         String  
-  phone         String?
-  gender        Gender
-  race        Race?
-  positionEffectiveDate     DateTime
-  dateOfBirth   DateTime
-  accessLevel      String?
+  id                    String   @id @default(uuid())
+  firstName             String
+  lastName              String
+  middleName            String?
+  ssn                   String
+  userName              String?
+  suffix                String?
+  email                 String
+  phone                 String?
+  gender                Gender
+  race                  Race?
+  positionEffectiveDate DateTime
+  dateOfBirth           DateTime
+  accessLevel           String?
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  staffSignature  StaffSignature[]
-  staffPosition StaffPosition[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  staffSignature    StaffSignature[]
+  staffPosition     StaffPosition[]
   staffCertifcation StaffCertifcation[]
-  staffFile StaffFile[]
-  userId        String?   @unique
-  user          User?     @relation(name:"UserToStaff", fields: [userId], references: [id])
+  staffFile         StaffFile[]
+  userId            String?             @unique
+  user              User?               @relation(name: "UserToStaff", fields: [userId], references: [id])
 }
 
 model StaffSignature {
-  id                String       @id @default(uuid())
-  signature    String    
-  pin      String 
-  staffId          String
-  staff            Staff      @relation(fields: [staffId], references: [id],  onDelete: Cascade)
+  id        String @id @default(uuid())
+  signature String
+  pin       String
+  staffId   String
+  staff     Staff  @relation(fields: [staffId], references: [id], onDelete: Cascade)
 
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model StaffPosition {
-  id                String       @id @default(uuid())
-  name    String    
-  startDate     DateTime
-  endBirth   DateTime
-  staffId          String
-  staff            Staff      @relation(fields: [staffId], references: [id],  onDelete: Cascade)
+  id        String   @id @default(uuid())
+  name      String
+  startDate DateTime
+  endBirth  DateTime
+  staffId   String
+  staff     Staff    @relation(fields: [staffId], references: [id], onDelete: Cascade)
 
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model StaffCertifcation {
-  id                 String       @id @default(uuid())
-  name String        
-  yearOfPassing  String       
-  grade String         
-  staffId          String
-  staff            Staff      @relation(fields: [staffId], references: [id],  onDelete: Cascade)
+  id            String @id @default(uuid())
+  name          String
+  yearOfPassing String
+  grade         String
+  staffId       String
+  staff         Staff  @relation(fields: [staffId], references: [id], onDelete: Cascade)
 
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model StaffFile {
-  id           String   @id @default(uuid())
-  staffId    String
-  fileName     String  
-  fileType     String  
-  fileUrl      String   
-  description  String?  
-  staff      Staff  @relation(fields: [staffId], references: [id],  onDelete: Cascade)
+  id          String  @id @default(uuid())
+  staffId     String
+  fileName    String
+  fileType    String
+  fileUrl     String
+  description String?
+  staff       Staff   @relation(fields: [staffId], references: [id], onDelete: Cascade)
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Patient {
-  id            String    @id @default(uuid())
-  firstName     String
-  lastName      String
-  middleName      String?
-  nickName      String?
-  suffix        String?
-  prefix        String?
-  comments        String?
-  ssn        String?
-  email         String  
-  phone         String?
-  gender        Gender
+  id          String   @id @default(uuid())
+  firstName   String
+  lastName    String
+  middleName  String?
+  nickName    String?
+  suffix      String?
+  prefix      String?
+  comments    String?
+  ssn         String?
+  email       String
+  phone       String?
+  gender      Gender
   race        Race?
-  startDate     DateTime
-  dateOfBirth   DateTime
-  address       Json?
+  startDate   DateTime
+  dateOfBirth DateTime
+  address     Json?
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  appointments  Appointment[]
-  insurance     Insurance[] 
-  diagnosis   Diagnosis[]
-  ledger Ledger[]
-  medication Medication[]
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+  appointments            Appointment[]
+  insurance               Insurance[]
+  diagnosis               Diagnosis[]
+  ledger                  Ledger[]
+  medication              Medication[]
   medicationAdminstration MedicationAdminstration[]
-  vitals  Vitals[]
-  document Document[]
-  service Service[]
-  physician Physician[]
-  immunization Immunization[]
-  patientFile PatientFile[]
-  parentContact ParentContact[]
-  collateralContact CollateralContact[]
-  contactNote ContactNote[]
-  educationBackground EducationBackground[]
-  employment Employment[]
-  socialDeterminants SocialDeterminants[]
-  parentSignature ParentSignature[]
-  clientSignature ClientSignature[]
-  complaince Compliance[]
-  treatmentPlan TreatmentPlan[]
-  questionnaire Questionnaire[]
-  discharge Discharge[]
-  medicalHistory MedicalHistory[]
-  familyMedicalHistory FamilyMedicalHistory[]
-  userId        String?   @unique
-  user          User?     @relation(name:"UserToPatient", fields: [userId], references: [id])
+  vitals                  Vitals[]
+  document                Document[]
+  service                 Service[]
+  physician               Physician[]
+  immunization            Immunization[]
+  patientFile             PatientFile[]
+  parentContact           ParentContact[]
+  collateralContact       CollateralContact[]
+  contactNote             ContactNote[]
+  educationBackground     EducationBackground[]
+  employment              Employment[]
+  socialDeterminants      SocialDeterminants[]
+  parentSignature         ParentSignature[]
+  clientSignature         ClientSignature[]
+  complaince              Compliance[]
+  treatmentPlan           TreatmentPlan[]
+  questionnaire           Questionnaire[]
+  discharge               Discharge[]
+  medicalHistory          MedicalHistory[]
+  familyMedicalHistory    FamilyMedicalHistory[]
+  userId                  String?                   @unique
+  user                    User?                     @relation(name: "UserToPatient", fields: [userId], references: [id])
 }
 
 model Appointment {
-  id             String    @id @default(uuid())
-  date           DateTime
-  status         AppointmentStatus @default(PENDING)
+  id     String            @id @default(uuid())
+  date   DateTime
+  status AppointmentStatus @default(PENDING)
 
   // Relationship btw patient and appointment
-  patientId      String
-  patient        Patient  @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
   // Relationship btw appointment and doctor
 
   healthcareProviderId String
-  healthcareProvider User @relation(fields: [healthcareProviderId], references: [id],  onDelete: Cascade)
+  healthcareProvider   User   @relation(fields: [healthcareProviderId], references: [id], onDelete: Cascade)
 
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Insurance {
-  id            String     @id @default(uuid())
-  insuranceType String   
-  policyNumber  String     @unique
-  startDate     DateTime   
-  endDate       DateTime? 
-  status        insuranceStatus @default(PRIMARY)
-  eligibilityStatus  eligibilityStatus @default(PENDING)
-  
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  id                String            @id @default(uuid())
+  insuranceType     String
+  policyNumber      String            @unique
+  startDate         DateTime
+  endDate           DateTime?
+  status            insuranceStatus   @default(PRIMARY)
+  eligibilityStatus eligibilityStatus @default(PENDING)
 
-  patientId     String
-  patient       Patient    @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
 }
 
 model Diagnosis {
-  id          String    @id @default(uuid())
-  patientId   String
-  description String
+  id            String   @id @default(uuid())
+  patientId     String
+  description   String
   diagnosisCode String
   diagnosisDate DateTime @default(now())
-  patient     Patient    @relation(fields: [patientId], references: [id],  onDelete: Cascade)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  patient       Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Document {
-  id          String   @id @default(uuid())
-  template   String
+  id       String   @id @default(uuid())
+  template String
   author   String
   client   String
-  date   DateTime
-  
-  patientId   String
-  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  date     DateTime
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Ledger {
-  id          String   @id @default(uuid())
+  id          String            @id @default(uuid())
   patientId   String
   description String
   paymentType paymentTypeStatus @default(CASH)
   amount      Float
-  ledgerDate DateTime @default(now())
-  ledgerType LedgerType
-  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  ledgerDate  DateTime          @default(now())
+  ledgerType  LedgerType
+  patient     Patient           @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 }
 
 model Medication {
-  id          String   @id @default(uuid())
-  patientId   String
-  name String
-  route String
-  purpose String
+  id         String   @id @default(uuid())
+  patientId  String
+  name       String
+  route      String
+  purpose    String
   prescriber String
-  frequency      Float
-  startDate DateTime
-  endDate DateTime
+  frequency  Float
+  startDate  DateTime
+  endDate    DateTime
 
-  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model MedicationAdminstration {
-  id          String   @id @default(uuid())
+  id String @id @default(uuid())
 
-  name String
-  route String
-  notes String
-  initials String
-  frequency      Float
+  name             String
+  route            String
+  notes            String
+  initials         String
+  frequency        Float
   administeredDate DateTime
-  patientId   String
-  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  patientId        String
+  patient          Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Vitals {
-  id          String   @id @default(uuid())
-  bpSys       Float
-  bpDias      Float
-  temperature Float
-  pulseRate Float
+  id              String   @id @default(uuid())
+  bpSys           Float
+  bpDias          Float
+  temperature     Float
+  pulseRate       Float
   respiratoryRate Float
-  weight Float
-  height Float
-  recordDate DateTime
-  patientId   String
-  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  weight          Float
+  height          Float
+  recordDate      DateTime
+  patientId       String
+  patient         Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Service {
@@ -500,304 +502,304 @@ model Service {
   description String?
   cost        Float
   patientId   String
-  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  patient     Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Physician {
-  id            String    @id @default(uuid())
-  firstName     String
-  lastName      String
-  phone         String
-  address       String
-  comment       String
-  patientId   String
-  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id        String   @id @default(uuid())
+  firstName String
+  lastName  String
+  phone     String
+  address   String
+  comment   String
+  patientId String
+  patient   Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Immunization {
-  id           String   @id @default(uuid())
-  patientId    String
-  vaccineName  String   
-  manufacturer  String   
-  lotNumber  Float   
-  adminstrationSite  String   
-  rejectedReason  String? 
-  isRejected  Boolean?   
-  immunization  String?   
-  dose         Int     
-  dateAdministered DateTime 
-  dateExpired DateTime 
-  administeredBy String   
-  comments        String? 
-  patient      Patient  @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  id                String   @id @default(uuid())
+  patientId         String
+  vaccineName       String
+  manufacturer      String
+  lotNumber         Float
+  adminstrationSite String
+  rejectedReason    String?
+  isRejected        Boolean?
+  immunization      String?
+  dose              Int
+  dateAdministered  DateTime
+  dateExpired       DateTime
+  administeredBy    String
+  comments          String?
+  patient           Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model PatientFile {
-  id           String   @id @default(uuid())
-  patientId    String
-  fileName     String  
-  fileType     String  
-  fileUrl      String   
-  description  String?  
-  patient      Patient  @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  id          String  @id @default(uuid())
+  patientId   String
+  fileName    String
+  fileType    String
+  fileUrl     String
+  description String?
+  patient     Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ParentContact {
-  id           String    @id @default(uuid())
-  firstName     String
-  lastName      String
-  relationship contactedStatus   
+  id           String          @id @default(uuid())
+  firstName    String
+  lastName     String
+  relationship contactedStatus
   phone        String
   email        String?
-  city      String?   
-  state      String?   
-  address    String?
-  comments      String?   
+  city         String?
+  state        String?
+  address      String?
+  comments     String?
   patientId    String
-  patient      Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
-  
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  patient      Patient         @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model CollateralContact {
-  id           String    @id @default(uuid())
-  firstName     String
-  lastName      String
-  phone        String
-  email        String?
+  id          String            @id @default(uuid())
+  firstName   String
+  lastName    String
+  phone       String
+  email       String?
   contactType contactTypeStatus @default(OTHERS)
-  patientId    String
-  patient      Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  patientId   String
+  patient     Patient           @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 }
 
 model ContactNote {
-  id           String    @id @default(uuid())
-  staff     String
+  id            String              @id @default(uuid())
+  staff         String
   contacted     contactedStatus
-  contactDate        DateTime
-  contactTime        DateTime
-  contactMethod      contactMethodStatus
-  note       String
-  patientId    String
-  patient      Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  contactDate   DateTime
+  contactTime   DateTime
+  contactMethod contactMethodStatus
+  note          String
+  patientId     String
+  patient       Patient             @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
 }
 
 model EducationBackground {
-  id                 String       @id @default(uuid())
-  educationLevel          educationLevelStatus   @default(PRIMARY)         
-  yearOfPassing  String       
-  degree String         
-  grade String         
-  patientId          String
-  patient            Patient      @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  id             String               @id @default(uuid())
+  educationLevel educationLevelStatus @default(PRIMARY)
+  yearOfPassing  String
+  degree         String
+  grade          String
+  patientId      String
+  patient        Patient              @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Employment {
-  id                String       @id @default(uuid())
-  organizationName    String       
-  designation  String       
-  startDate DateTime         
-  endDate DateTime         
-  responsibilities String         
-  patientId          String
-  patient            Patient      @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  id               String   @id @default(uuid())
+  organizationName String
+  designation      String
+  startDate        DateTime
+  endDate          DateTime
+  responsibilities String
+  patientId        String
+  patient          Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model SocialDeterminants {
-  id                String       @id @default(uuid())
-  finance    String       
-  food  String?      
-  transportation String? 
-  activity String?    
-  patientId          String
-  patient            Patient      @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  id             String  @id @default(uuid())
+  finance        String
+  food           String?
+  transportation String?
+  activity       String?
+  patientId      String
+  patient        Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ClientSignature {
-  id                String       @id @default(uuid())
-  signature    String    
-  pin      String 
-  patientId          String
-  patient            Patient      @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  id        String  @id @default(uuid())
+  signature String
+  pin       String
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ParentSignature {
-  id                String       @id @default(uuid())
-  signature    String    
-  pin         String
-  patientId          String
-  patient            Patient      @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  id        String  @id @default(uuid())
+  signature String
+  pin       String
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Compliance {
-  id             String    @id @default(uuid())
-  startdate           DateTime
+  id                String           @id @default(uuid())
+  startdate         DateTime
   enddate           DateTime
-  lastCompleteddate           DateTime
-  complaince     String
-  document     String
-  template     String
-  service     String
-  comment     String
-  history     String
-  completed     complainceStatus @default(PENDING)
-  patientId      String
-  patient        Patient  @relation(fields: [patientId], references: [id],  onDelete: Cascade)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  lastCompleteddate DateTime
+  complaince        String
+  document          String
+  template          String
+  service           String
+  comment           String
+  history           String
+  completed         complainceStatus @default(PENDING)
+  patientId         String
+  patient           Patient          @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
 }
 
 model TreatmentPlan {
-  id          String   @id @default(uuid())
-  name       String
-  startDate      DateTime
-  endDate      DateTime
-  startTime String?
-  endTime String?
-  service String
-  placeOfService String
+  id                        String   @id @default(uuid())
+  name                      String
+  startDate                 DateTime
+  endDate                   DateTime
+  startTime                 String?
+  endTime                   String?
+  service                   String
+  placeOfService            String
   maintenanceRecommendation String?
-  strength String?
-  needs String?
-  abilites String?
-  preferences String?
-  planning String?
-  stepdownServices String?
-  dischargePlanning String?
-  agencies String?
-  patientId   String
-  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  strength                  String?
+  needs                     String?
+  abilites                  String?
+  preferences               String?
+  planning                  String?
+  stepdownServices          String?
+  dischargePlanning         String?
+  agencies                  String?
+  patientId                 String
+  patient                   Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
   treatmentGoals TreatmentGoals[]
 }
 
 model TreatmentGoals {
-  id          String   @id @default(uuid())
-  name       String
-  startDate      DateTime?
-  endDate      DateTime?
+  id              String               @id @default(uuid())
+  name            String
+  startDate       DateTime?
+  endDate         DateTime?
   targetDate      DateTime
-  status treatmentGoalsStatus
-  comments String?
-  description String?
-  treatmentplanId   String
-  treatmentplan     TreatmentPlan   @relation(fields: [treatmentplanId], references: [id],  onDelete: Cascade)
+  status          treatmentGoalsStatus
+  comments        String?
+  description     String?
+  treatmentplanId String
+  treatmentplan   TreatmentPlan        @relation(fields: [treatmentplanId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
   treatmentObjective TreatmentObjective[]
 }
 
 model TreatmentObjective {
-  id          String   @id @default(uuid())
-  
-  startDate      DateTime?
-  endDate      DateTime?
-  targetDate      DateTime
-  objective String
-  treatmentgoalsId   String
-  treatmentgoals     TreatmentGoals   @relation(fields: [treatmentgoalsId], references: [id],  onDelete: Cascade)
+  id String @id @default(uuid())
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  startDate        DateTime?
+  endDate          DateTime?
+  targetDate       DateTime
+  objective        String
+  treatmentgoalsId String
+  treatmentgoals   TreatmentGoals @relation(fields: [treatmentgoalsId], references: [id], onDelete: Cascade)
+
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
   treatmentIntervention TreatmentIntervention[]
 }
-model TreatmentIntervention {
-  id          String   @id @default(uuid())
-  intervention String
-  servicetype String?
-  stafftypes String?
-  customstafftypes String?
-  customservice String?
-  frequency Float
-  location String
-  duration Float
-  treatmentobjectiveId   String
-  treatmentobjective     TreatmentObjective   @relation(fields: [treatmentobjectiveId], references: [id],  onDelete: Cascade)
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+model TreatmentIntervention {
+  id                   String             @id @default(uuid())
+  intervention         String
+  servicetype          String?
+  stafftypes           String?
+  customstafftypes     String?
+  customservice        String?
+  frequency            Float
+  location             String
+  duration             Float
+  treatmentobjectiveId String
+  treatmentobjective   TreatmentObjective @relation(fields: [treatmentobjectiveId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Questionnaire {
-  id          String   @id @default(uuid())
-  question String
-  patientId   String
-  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
+  id        String  @id @default(uuid())
+  question  String
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Discharge {
-  id          String   @id @default(uuid())
-  dischargeDate       String
-  reason      dischargeReasonType
-  linkDocument      String
-  summary String?
-  patientId   String
-  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id            String              @id @default(uuid())
+  dischargeDate String
+  reason        dischargeReasonType
+  linkDocument  String
+  summary       String?
+  patientId     String
+  patient       Patient             @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
 }
 
 model MedicalHistory {
-  id          String   @id @default(uuid())
-  history       String
-  addictionDetails       String
-  date      DateTime
-  allergies Boolean?
-  sexualAbuse Boolean?
-  pregnantBefore Boolean?
+  id                 String                     @id @default(uuid())
+  history            String
+  addictionDetails   String
+  date               DateTime
+  allergies          Boolean?
+  sexualAbuse        Boolean?
+  pregnantBefore     Boolean?
   expectingPregnancy Boolean?
-  abortion Boolean?
-  breastCancer Boolean?
-  substances SubstanceAddictionType[] @default([])
-  behaviours BehaviouralAddictionType[] @default([])
-  patientId   String
-  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  abortion           Boolean?
+  breastCancer       Boolean?
+  substances         SubstanceAddictionType[]   @default([])
+  behaviours         BehaviouralAddictionType[] @default([])
+  patientId          String
+  patient            Patient                    @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt          DateTime                   @default(now())
+  updatedAt          DateTime                   @updatedAt
 }
 
-
 model FamilyMedicalHistory {
-  id          String   @id @default(uuid())
-  familyhistory       String
-  patientId   String
-  patient     Patient   @relation(fields: [patientId], references: [id],  onDelete: Cascade)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id            String   @id @default(uuid())
+  familyhistory String
+  patientId     String
+  patient       Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }

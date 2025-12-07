@@ -1,24 +1,24 @@
-import { httpServer } from './app';
-import { BackupService } from './services/backup.service'
+import { httpServer } from "./app";
+import { BackupService } from "./services/backup.service";
 
-const backupService = new BackupService()
+const backupService = new BackupService();
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
 
 // Daily backup
 setInterval(() => {
-    backupService.createBackup()
-}, 24 * 60 * 60 * 1000)
+  backupService.createBackup();
+}, 24 * 60 * 60 * 1000);
 
 // Backup on startup
-backupService.createBackup()
+backupService.createBackup();
 
-httpServer.listen(PORT, () => {
+httpServer.listen(
+  {
+    port: Number(PORT),
+    host: "0.0.0.0",
+  },
+  () => {
     console.log(`Server running on port ${PORT}`);
-});
-
-
-
-
-
-
+  }
+);
